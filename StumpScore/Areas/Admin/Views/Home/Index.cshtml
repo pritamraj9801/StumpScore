@@ -3,15 +3,23 @@
     ViewBag.Title = "Index";
 }
 <style>
-    .pointer{
-        cursor:pointer;
+    .pointer {
+        cursor: pointer;
+    }
+.box50px{
+height:50px;
+width:50px;
+}
+    .heading{
+        font-size:1.2rem;
+        text-align:center;
     }
 </style>
 
 <div>
     @Html.EJS().DashboardLayout("HomeDashboard").Columns(6).ContentTemplate(@<div>
         <div id="tournaments" class="e-panel" data-row="0" data-col="0" data-sizeX="2" data-sizeY="2">
-            <div>
+            <div class="heading">
                 All Tournaments
             </div>
             <div class="e-panel-container">
@@ -20,20 +28,32 @@
                {
                    col.Field("Name").Template("<div><image src='${TournamentIcon}'/><span>${Name}</span</div>").Add();
                    col.Field("StartingDate").HeaderText("Starts on").Format("yMd").Add();
-                   col.HeaderText("").Template("<span class='pointer'>&#9660</span>").Add();
+                   col.HeaderText("").Template("<span class='pointer'>&#9660</span>&nbsp;&nbsp;<span>Teams</span>").Add();
                }).Render()
                 </div>
             </div>
         </div>
-        <div id="recentMatches" class="e-panel" data-row="0" data-col="2" data-sizeX="2" data-sizeY="1">
-           <div>
-              Recent Matches
-           </div>
-            <div class="class="e-panel-container"">
+        <div id="recentMatches" class="e-panel" data-row="0" data-col="2" data-sizeX="4" data-sizeY="1">
+            <div class="heading">
+                Recent Matches
+            </div>
+            <div class="class=" e-panel-container"">
                 <div class="text-align">
-                    @Html.EJS().Grid("allMatches").DataSource(Model.Matches).Render()
+                    @Html.EJS().Grid("allMatches").DataSource(Model.Matches).Columns(col =>
+               {
+                   col.Field("Team1.Name").HeaderText("").Template("<div><img class=\"box50px\" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
+                   col.Field("").Template("v/s").Add();
+                   col.Field("Team2.Name").HeaderText("").Template("<div><img class=\"box50px\" src=${Team2.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
+                   col.Field("Stadium.StadiumName").HeaderText("").Add();
+                   col.Field("MatchStart").HeaderText("").Add();
+                   col.Field("").Template("<button>Start</button>").Add();
+               }).Render()
                 </div>
             </div>
         </div>
     </div>).Render()
 </div>
+
+<script id="teamName" type="text/x-template">
+    <div><img class="box50px" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>
+</script>

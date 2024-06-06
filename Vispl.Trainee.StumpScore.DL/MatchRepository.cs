@@ -133,7 +133,9 @@ stadium.StadiumName,
 team1.Id as 'Team1Id',
 team2.Id as 'Team2Id',
 team1.Name as 'Team1Name',
+team1.TeamIcon as 'team1Icon',
 team2.Name as 'Team2Name',
+team2.TeamIcon as 'team2Icon',
 Matches.TournamentId
 from Matches
 left join Team as team1 on Matches.Team1Id=team1.Id
@@ -156,10 +158,12 @@ left join stadium on Matches.StadiumId=stadium.Id";
                         match.Team1Id = Convert.ToInt32(row["Team1Id"]);
                         Team team1 = new Team();
                         team1.Name = row["Team1Name"].ToString();
+                        team1.TeamIcon = row["team1Icon"].ToString();
                         match.Team1 = team1;
 
                         Team team2 = new Team();
                         team2.Name = row["Team2Name"].ToString();
+                        team2.TeamIcon = row["team2Icon"].ToString();
                         match.Team2 = team2;
 
                         match.Team2Id = Convert.ToInt32(row["Team2Id"]);

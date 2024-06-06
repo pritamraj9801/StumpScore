@@ -11,8 +11,8 @@ namespace StumpScore.Areas.Admin.Controllers
 {
     public class HomeController : Controller
     {
-        TournamentService _tournamentService;
-        MatchService _matchService;
+        private readonly TournamentService _tournamentService;
+        private readonly MatchService _matchService;
         public HomeController()
         {
             _tournamentService = new TournamentService(ConfigurationManager.ConnectionStrings["StumpScoreDbConnectionDEV"].ConnectionString);
