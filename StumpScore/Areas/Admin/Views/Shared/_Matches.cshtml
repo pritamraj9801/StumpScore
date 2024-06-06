@@ -1,0 +1,105 @@
+﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Matches>
+
+<style>
+    #matchesContainer {
+        margin: 3rem auto;
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+
+    .tableHeading {
+        background: #CDE8E5;
+    }
+</style>
+@if (Model == null || Model.Count == 0)
+{
+    <p class="mt-5">There is no any sheduled matches</p>
+}
+else
+{
+
+    <div id="matchesContainer">
+        <div>
+            <table cellspacing="10" cellpadding="10">
+                <thead class="tableHeading">
+                    <tr>
+                        <th>
+                            <div>
+                                Team 1
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                Team 2
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                Stadium
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                Match Start
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                Match End
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var match in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div>
+                                    @match.Team1.Name
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    @match.Team2.Name
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    @match.Stadium.StadiumName
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    @match.MatchStart
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    @match.MatchEnd
+                                </div>
+                            </td>
+                            <td>
+                                @Html.ActionLink("See Details", "MatchDetailedSummary", "Match", new { matchId = match.Id, tournamentId = match.TournamentId }, null)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="matchFilterBox">
+            <p>Filter Matches</p>
+            <label>From</label>
+            <br />
+            @*@{string s = Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml").ToString();}*@
+            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml",new string[] {"fromDateTimePicker","fromTimeZonePicker"})
+            <br />
+            <label>To</label>
+            <br />
+            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml",new string[] { "toDateTimePicker", "toTimeZonePicker" })
+            <br />
+           <button>Filter</button>
+        </div>
+    </div>
+}

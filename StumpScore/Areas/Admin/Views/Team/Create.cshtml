@@ -1,0 +1,218 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.Team
+@{
+    ViewBag.Title = "Create";
+}
+
+<style>
+    #SelectedPlayers {
+        font-family: Arial, sans-serif;
+        margin-top: 20px;
+    }
+
+    .header-row, .player-row {
+        display: flex;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .header-row {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    .header-cell, .player-cell {
+        flex: 1;
+        text-align: center;
+    }
+
+    .player-cell {
+        padding: 5px;
+    }
+
+    .captain-checkbox, .vicecaptain-checkbox {
+        margin-left: 5px;
+    }
+</style>
+<h2 class="text-center">Create Team</h2>
+
+<div>
+    @using (Html.BeginForm("Create", "Team", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            @Html.DisplayNameFor(m => m.Name)
+            <br />
+            @Html.EJS().TextBoxFor(m => m.Name).Render()
+            <br />
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        <div>
+            @Html.DisplayNameFor(m => m.ShortName)
+            <br />
+            @Html.EJS().TextBoxFor(m => m.ShortName).Render()
+            <br />
+            @Html.ValidationMessageFor(m => m.ShortName)
+        </div>
+        <div>
+            @Html.DisplayNameFor(m => m.TeamOwner)
+            <br />
+            @Html.EJS().TextBoxFor(m => m.TeamOwner).Render()
+            <br />
+            @Html.ValidationMessageFor(m => m.TeamOwner)
+        </div>
+        <div>
+            @Html.DisplayNameFor(m => m.TeamIcon)
+            <br />
+            @Html.TextBox("file", "", new { type = "file", required = "required" })
+            <br />
+            @Html.ValidationMessageFor(m => m.TeamIcon)
+        </div>
+
+        <h4 class="text-center">Add Players for your Team</h4>
+        <div>
+            @*@Html.EJS().MultiSelect("selectedPlayers").DataSource(ViewBag.Players as IEnumerable<SelectListItem>).Fields(p => p.Text("Text").Value("Value")).Placeholder("select players").Render()*@
+            @Html.EJS().MultiSelect("selectedPlayers").DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.Player>)ViewBag.Players).Fields(p => p.Text("Name").Value("Id")).Change("HandleMultiDropDownChange").Placeholder("select players").Render()
+        </div>
+        <div>
+        </div>
+        <div id="SelectedPlayers">
+
+        </div>
+        <div>
+            @Html.LabelFor(m => m.WicketKipperId)
+            <br />
+            @Html.EJS().DropDownListFor(m => m.WicketKipperId).Placeholder("Select Wicket Kipper").Fields(p=>p.Text("Text").Value("Value")).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.TournamentId)
+            <br />
+            @Html.EJS().DropDownListFor(m => m.TournamentId).DataSource(ViewBag.Tournaments as IEnumerable<SelectListItem>).Fields(t => t.Text("Text").Value("Value")).Placeholder("select Tournament").Render()
+        </div>
+        <div>
+            <div>
+                <input type="submit" />
+            </div>
+            <div>
+                <a href="#">Reset</a>
+            </div>
+            <div>
+                @Html.ActionLink("go back", "Index", "Team")
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    var model = @Html.Raw(Json.Encode(ViewBag.Players));
+    function HandleMultiDropDownChange() {
+        var newData = [];
+        let allSelectedPlayersOptions = document.getElementsByName('selectedPlayers')[0].querySelectorAll('option');
+        let selectedPlayersId = [];
+        for (let i = 0; i < allSelectedPlayersOptions.length; i++) {
+            selectedPlayersId.push(allSelectedPlayersOptions[i].value);
+        }
+        document.getElementById("SelectedPlayers").innerHTML = `
+        <h4 class="text-center">Selected Players</h4>
+        <div class="header-row">
+            <span class="header-cell">Player</span>
+            <span class="header-cell">Captain</span>
+            <span class="header-cell">ViceCaptain</span>
+        </div>`;
+
+        for (let player of model) {
+            if (selectedPlayersId.includes(player.Id.toString())) {
+                let elemToInsert = document.createElement("div");
+                elemToInsert.className = "player-row";
+                elemToInsert.innerHTML = `
+                <span class="player-cell">${player.Name}</span>
+                <span class="player-cell"><input type='checkbox' class='captain-checkbox' value='${player.Id}' name='CaptainId' data-player-id='${player.Id}'/></span>
+                <span class="player-cell"><input type='checkbox' class='vicecaptain-checkbox' value='${player.Id}' name='ViceCaptainId' data-player-id='${player.Id}'/></span>`;
+                document.getElementById("SelectedPlayers").appendChild(elemToInsert);
+
+                // ----- adding for dropdown
+                newData.push({ Text: `${player.Name}`, Value: `${player.Id}` });
+            }
+        }
+        updateDropDownListDataSource(newData);
+        // Add event listeners for the checkboxes
+        let captainCheckboxes = document.querySelectorAll('.captain-checkbox');
+        let viceCaptainCheckboxes = document.querySelectorAll('.vicecaptain-checkbox');
+
+        captainCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Uncheck other captain checkboxes
+                    captainCheckboxes.forEach(box => {
+                        if (box !== this) {
+                            box.checked = false;
+                        }
+                    });
+                    // Disable corresponding vice-captain checkbox
+                    let playerId = this.getAttribute('data-player-id');
+                    document.querySelector(`.vicecaptain-checkbox[data-player-id='${playerId}']`).disabled = true;
+                } else {
+                    // Enable corresponding vice-captain checkbox if unchecked
+                    let playerId = this.getAttribute('data-player-id');
+                    document.querySelector(`.vicecaptain-checkbox[data-player-id='${playerId}']`).disabled = false;
+                }
+            });
+        });
+
+        viceCaptainCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Uncheck other vice-captain checkboxes
+                    viceCaptainCheckboxes.forEach(box => {
+                        if (box !== this) {
+                            box.checked = false;
+                        }
+                    });
+                    // Disable corresponding captain checkbox
+                    let playerId = this.getAttribute('data-player-id');
+                    document.querySelector(`.captain-checkbox[data-player-id='${playerId}']`).disabled = true;
+                } else {
+                    // Enable corresponding captain checkbox if unchecked
+                    let playerId = this.getAttribute('data-player-id');
+                    document.querySelector(`.captain-checkbox[data-player-id='${playerId}']`).disabled = false;
+                }
+            });
+        });
+
+        // handling wicketkipper dropdown datasource
+    }
+    function updateDropDownListDataSource(newData) {
+        console.log("updating dropdown");
+        console.log(newData);
+        // Get the DropDownList instance
+        var dropDownListObj = document.getElementById('WicketKipperId').ej2_instances[0];
+
+        // Update the data source and refresh the DropDownList
+        dropDownListObj.dataSource = newData;
+        dropDownListObj.dataBind();
+    }
+</script>
+
+
+
+@*<script>
+        var model = @Html.Raw(Json.Encode(ViewBag.Players));
+        function HandleMultiDropDownChange() {
+            let allSelectedPlayersOptions = document.getElementsByName('selectedPlayers')[0].querySelectorAll('option')
+            let selectedPlayersId = new Array();
+            for (let i = 0; i < allSelectedPlayersOptions.length; i++) {
+                selectedPlayersId.push(allSelectedPlayersOptions[i].value);
+            }
+            document.getElementById("SelectedPlayers").innerHTML = `<div>
+            <span>Player</span>
+            <span>Captain</span>
+            <span>ViceCaptain</span>
+            </div>`;
+
+            for (let player of model) {
+                if (selectedPlayersId.includes(player.Id.toString())) {
+                    let elemToInsert = document.createElement("div");
+                    elemToInsert.innerHTML = `<span>${player.Name}</span><span><input type='checkbox'/></span><span><input type='checkbox'/></span>`;
+                    document.getElementById("SelectedPlayers").appendChild(elemToInsert);
+                }
+            }
+        }
+    </script>*@

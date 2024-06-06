@@ -1,0 +1,49 @@
+﻿
+@model Vispl.Trainee.StumpScore.VO.Models.Tournament
+<h2>Create Tournament</h2>
+<div>
+    @using (Html.BeginForm("Create", "Tournament", FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(m => m.Name)
+            <br />
+            @Html.EJS().TextBoxFor(m => m.Name).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.ShortName)
+            <br />
+            @Html.EJS().TextBoxFor(m => m.ShortName).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.StartingDate)
+            <br />
+            @Html.EJS().DateTimePickerFor(m => m.StartingDate).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.EndingDate)
+            <br />
+            @Html.EJS().DateTimePickerFor(m => m.EndingDate).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MatchFormatId)
+            <br />
+            @Html.EJS().DropDownListFor(m=>m.MatchFormatId).DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.MatchFormat>)ViewBag.MatchFormats).Fields(f => f.Text("Name").Value("Id")).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m => m.TournamentIcon)
+            <br />
+            @Html.TextBoxFor(m => m.TournamentIcon)
+        </div>
+        <div>
+            <div>
+                <input type="submit" />
+            </div>
+            <div>
+                <a href="#">Clear</a>
+            </div>
+            <div>
+                @Html.ActionLink("go back", "Index", "Tournament", new {area="Admin"})
+            </div>
+        </div>
+    }
+</div>

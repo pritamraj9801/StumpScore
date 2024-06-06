@@ -1,0 +1,22 @@
+﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Tournament>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <div>
+        <h2 class="text-center">All Tournaments</h2>
+        @Html.ActionLink("create new", "Create", null, new { @class = "createBtn" })
+    </div>
+    <div>
+        @Html.EJS().Grid("Grid").DataSource(Model).Columns(col =>
+   {
+       col.Field("Name").Add();
+       col.Field("ShortName").HeaderText("Short Name").Add();
+       col.Field("StartingDate").HeaderText("Starting Date").Add();
+       col.Field("EndingDate").HeaderText("Ending Date").Add();
+       col.Field("MatchFormat.Name").HeaderText("Format").Add();
+   }).Render()
+    </div>
+</div>
+

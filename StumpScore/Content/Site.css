@@ -1,0 +1,8 @@
+﻿nav{
+    display:flex;
+    justify-content:space-between;
+}
+.createBtn {
+    border: 1px solid red;
+    color: red;
+}

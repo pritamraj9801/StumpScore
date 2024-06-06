@@ -1,0 +1,36 @@
+﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Tournament>
+@{
+    ViewBag.Title = "Index";
+}
+<div>
+    <div>
+        <h2 class="text-center">All Matches</h2>
+        @Html.ActionLink("Create new", "Create", "Match", new {@class= "createBtn" })
+    </div>
+    <div>
+        @Html.Label("Tournament")
+        @Html.EJS().DropDownList("tournament").DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.Tournament>)Model).Fields(f => f.Text("Name").Value("Id")).Change("Getmatches").Placeholder("Select Tournament").HtmlAttributes(new Dictionary<string, object> { { "id", "tournamentDropdown" } }).Render()
+    </div>
+    <div id="matches">
+
+    </div>
+</div>
+
+<script>
+    function Getmatches() {
+        let tournamentId = document.getElementsByName('tournament')[0].options[0].value;
+//        console.log("Tournament selected: " + tournamentId);
+        $.ajax({
+            url: '/Admin/Match/MatchesForTournament',
+            type: 'GET',
+            data: { tournamentId: tournamentId },
+            success: function (data) {
+                $('#matches').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching matches:', error);
+            }
+        });
+    }
+</script>
+

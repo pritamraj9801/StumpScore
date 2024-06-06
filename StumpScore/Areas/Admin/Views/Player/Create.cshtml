@@ -1,0 +1,179 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.Player
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    #playerContainer{
+        width:70vw;
+        margin:10px auto;
+    }
+    #playerContainer input {
+        border:none;
+        outline:none;
+    }
+</style>
+<div id="playerContainer">
+    <div>
+        <h2 class="text-center">Create Player</h2>
+    </div>
+    <div>
+        @using (Html.BeginForm("Create", "Player", FormMethod.Post, new { enctype = "multipart/form-data", @id = "playerForm" }))
+        {
+            // ----------------- Name
+            <div>
+                @Html.LabelFor(m=>m.Name)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.Name).Placeholder("Enter Name").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Jersey number
+            <div>
+                @Html.LabelFor(m => m.JerseyNumber)
+                <br />
+                @Html.EJS().NumericTextBoxFor(m => m.JerseyNumber).Format("###").Placeholder("Enter Jersey number").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.JerseyNumber, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- date Of birth
+            <div>
+                @Html.LabelFor(m => m.DateOfBirth)
+                <br />
+                @Html.EJS().DateTimePickerFor(m => m.DateOfBirth).Placeholder("Enter Date of Birth").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.DateOfBirth, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Age
+            <div>
+                @Html.DisplayNameFor(m => m.Age)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.Age).Placeholder("Enter age").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.Age, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Birth Place
+            <div>
+                @Html.DisplayNameFor(m => m.BirthPlace)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.BirthPlace).Placeholder("Enter birth place").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.BirthPlace, null, new { @class = "text-danger" })
+
+            </div>
+            // ----------------- Nationality (Country)
+            <div>
+                @Html.DisplayNameFor(m => m.CountryId)
+                <br />
+                @Html.EJS().DropDownListFor(m => m.CountryId).DataSource(ViewBag.Countries as IEnumerable<SelectListItem>).Fields(f => f.Text("Text").Value("Value")).Placeholder("select country").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.CountryId, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Player Type
+            <div>
+                @Html.DisplayNameFor(m => m.PlayerTypeId)
+                <br />
+                @Html.EJS().DropDownListFor(m => m.PlayerTypeId).DataSource(ViewBag.PlayersType as IEnumerable<SelectListItem>).Fields(f => f.Text("Text").Value("Value")).Placeholder("Select Player Type").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.PlayerTypeId, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Is Captain
+            <div>
+                @Html.EJS().CheckBoxFor(m => m.IsCaptain).Label("Play as Captain").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.IsCaptain, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- total matches played
+            <div>
+                @Html.DisplayNameFor(m => m.MatchesPlayed)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.MatchesPlayed).Placeholder("Total matches played count").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.MatchesPlayed, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- total runs scored
+            <div>
+                @Html.DisplayNameFor(m => m.RunsScored)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.RunsScored).Placeholder("Total runs scored").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.RunsScored, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- total wicket taken
+            <div>
+                @Html.DisplayNameFor(m => m.WicketTaken)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.WicketTaken).Placeholder("Total wickets taken").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.WicketTaken, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- batting average
+            <div>
+                @Html.DisplayNameFor(m => m.BattingAverage)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.BattingAverage).Type("number").Placeholder("Enter batting average").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.BattingAverage, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- bowling average
+            <div>
+                @Html.DisplayNameFor(m => m.BowlingAverage)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.BowlingAverage).Type("number").Placeholder("Enter bowling average").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.BowlingAverage, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Centuries
+            <div>
+                @Html.DisplayNameFor(m => m.Centuries)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.Centuries).Type("number").Placeholder("Enter total centuries").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.Centuries, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Half Centuries
+            <div>
+                @Html.DisplayNameFor(m => m.HalfCenturies)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.HalfCenturies).Type("number").Placeholder("Enter total half centuries").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.HalfCenturies, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Debut Date
+            <div>
+                @Html.DisplayNameFor(m => m.DebutDate)
+                <br />
+                @Html.EJS().DatePickerFor(m => m.DebutDate).Placeholder("Enter Debut date").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.DebutDate, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- ICC Ranking
+            <div>
+                @Html.DisplayNameFor(m => m.ICCRanking)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.ICCRanking).Type("number").Placeholder("Enter ICC Ranking").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.ICCRanking, null, new { @class = "text-danger" })
+            </div>
+            // ----------------- Picture
+            <div>
+                @Html.DisplayNameFor(m => m.Picture)
+                <br />
+                @Html.EJS().Uploader("playerImage").Multiple(false).Render()
+                @*@Html.TextBox("file", "", new { type = "file", required = "required" })*@
+                <br />
+                @Html.ValidationMessageFor(m => m.Picture, null, new { @class = "text-danger" })
+            </div>
+            <div>
+                <div>
+                    <input type="submit" />
+                </div>
+                <div>
+                    <a href="#" onclick="alert('Not implemented');">Clear</a>
+                </div>
+                <div>
+                    @Html.ActionLink("Go to players list", "Index", "Player", new { area = "Admin" })
+                </div>
+            </div>
+        }
+    </div>
+</div>

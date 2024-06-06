@@ -1,0 +1,73 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.User
+@{
+    ViewBag.Title = "SignIn";
+}
+<style>
+    #signinContainer {
+        background-image: url(../../../../Content/Images/UIGraphics/CircketSignInPage.jpg);
+        background-size: cover;
+        display: flex;
+        justify-content: space-between;
+        min-height: 100vh;
+    }
+
+    #signInBox {
+        width: 400px;
+        padding: 5px;
+        padding-top: 10rem;
+        background: #6B8A7A;
+        opacity: 0.6;
+    }
+
+        #signInBox .heading {
+            color: white;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        #signInBox input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        #signInBox label {
+            color: #254336;
+            font-size: 1.3rem;
+        }
+
+        #signInBox #submitBtn {
+            margin-top: 2rem;
+            border: 1px solid #DAD3BE;
+            padding: 3px 0;
+        }
+</style>
+
+<div id="signinContainer">
+    <div>
+        jj
+    </div>
+    <div id="signInBox">
+        <h2 class="heading">Sign In</h2>
+        @using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
+        {
+            <div>
+                @Html.LabelFor(m => m.ID)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.ID).Render()
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Password)
+                <br />
+                @Html.EJS().TextBoxFor(m => m.Password).Render()
+            </div>
+            <div>
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+            <div>
+                <input type="submit" id="submitBtn" />
+            </div>
+        }
+    </div>
+</div>

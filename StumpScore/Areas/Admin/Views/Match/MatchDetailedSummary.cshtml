@@ -1,0 +1,114 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.MatchDetailedVM
+
+<style>
+    #playersContainer {
+        width: 600px;
+        margin: 2rem auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap:4rem;
+    }
+
+    .captain {
+        color: red;
+        background-color: yellow;
+        border:1px solid black;
+        border-radius:50%;
+        padding:5px;
+        margin:5px;
+    }
+
+    .vicecaptain {
+        color: sandybrown;
+        background-color: aquamarine;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding:5px;
+        margin:5px;
+    }
+
+    .wicketkipper {
+        color: teal;
+        background-color: thistle;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding:5px;
+        margin:5px;
+    }
+    .teamName {
+        background: #7469B6;
+        padding:0.5rem 0;
+    }
+</style>
+
+<div id="playersContainer">
+    <div>
+        <div>
+            <h6 class="teamName text-center">
+                @Model.Team1.Name
+            </h6>
+        </div>
+        @foreach (var player in Model.Team1.Players)
+        {
+            <div>
+                @player.Name
+                @if (player.Id == Model.Team1.CaptainId)
+                {
+                    <span class="captain">
+                        c
+                    </span>
+                }
+                @if (player.Id == Model.Team1.ViceCaptainId)
+                {
+                    <span class="vicecaptain">
+                        vc
+                    </span>
+                }
+                @if (player.Id == Model.Team1.WicketKipperId)
+                {
+                    <span class="wicketkipper">
+                        wk
+                    </span>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        <div>
+            <h6 class="teamName text-center">
+                @Model.Team2.Name
+            </h6>
+        </div>
+        @foreach (var player in Model.Team2.Players)
+        {
+            <div>
+                @player.Name
+                @if (player.Id == Model.Team2.CaptainId)
+                {
+                    <span class="captain">
+                        c
+                    </span>
+                }
+                @if (player.Id == Model.Team2.ViceCaptainId)
+                {
+                    <span class="vicecaptain">
+                        vc
+                    </span>
+                }
+                @if (player.Id == Model.Team2.WicketKipperId)
+                {
+                    <span class="wicketkipper">
+                        wk
+                    </span>
+                }
+            </div>
+        }
+    </div>
+</div>
+<div>
+    <p>Match starts at: @Model.MatchStart</p>
+    <p>Match ends at: @Model.MatchEnd</p>
+</div>
+<div>
+    <p>Stadium: @Model.Stadium.StadiumName</p>
+</div>

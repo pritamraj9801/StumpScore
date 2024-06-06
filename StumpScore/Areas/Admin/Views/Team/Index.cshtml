@@ -1,0 +1,36 @@
+﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Team>
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .teamIcon{
+        width:25px;
+        height:25px;
+    }
+</style>
+<div>
+    <div>
+        <h2 class="text-center">All Teams</h2>
+        @Html.ActionLink("Create new", "Create", "Team", new { @class = "createBtn" })
+    </div>
+    <div>
+        @Html.EJS().Grid("TeamsList").DataSource((List<Vispl.Trainee.StumpScore.VO.Models.Team>)Model).Columns(col =>
+   {
+       col.Field("Name").Template("#TeamName").Add();
+       col.Field("Captain.Name").HeaderText("Captain").Add();
+       col.Field("ViceCaptain.Name").HeaderText("Vice Captain").Add();
+       col.Field("WicketKipper.Name").HeaderText("Wicket Kipper").Add();
+       col.Field("TeamOwner").HeaderText("Owner").Add();
+       col.Field("Tournament.Name").HeaderText("Tournament").Add();
+   }).Render()
+    </div>
+</div>
+
+<script id="TeamName" type="text/x-template">
+    <div>
+        <img class="teamIcon" src="${TeamIcon}"/>
+        <span>${Name}</span>
+        <span>(${ShortName})</span>
+    </div>
+</script>

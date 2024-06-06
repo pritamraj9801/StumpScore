@@ -1,0 +1,45 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.Matches
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<div>
+    @using (Html.BeginForm("Create","Match",FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(m => m.Team1Id)
+            <br />
+            @Html.EJS().DropDownListFor(m => m.Team1Id).DataSource(ViewBag.Teams as IEnumerable<SelectListItem>).Fields(f => f.Text("Text").Value("Value")).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m=>m.Team2Id)
+            <br/>
+            @Html.EJS().DropDownListFor(m=>m.Team2Id).DataSource(ViewBag.Teams as IEnumerable<SelectListItem>).Fields(f=>f.Text("Text").Value("Value")).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m=>m.StadiumId)
+            <br/>
+            @Html.EJS().DropDownListFor(m => m.StadiumId).DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.Stadium>)ViewBag.Stadiums).Fields(f=>f.Text("StadiumName").Value("Id")).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m=>m.MatchStart)
+            <br/>
+            @Html.EJS().DateTimePickerFor(m=>m.MatchStart).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m=>m.MatchEnd)
+            <br/>
+            @Html.EJS().DateTimePickerFor(m=>m.MatchEnd).Render()
+        </div>
+        <div>
+            @Html.LabelFor(m=>m.TournamentId)
+            <br/>
+            @Html.EJS().DropDownListFor(m=>m.TournamentId).DataSource(ViewBag.Tournaments as IEnumerable<SelectListItem>).Fields(f=>f.Text("Text").Value("Value")).Render()
+        </div>
+        <div>
+            <input type="submit"/>
+        </div>
+    }
+</div>

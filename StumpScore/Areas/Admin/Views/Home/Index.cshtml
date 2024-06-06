@@ -1,0 +1,39 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.AdminDashboardVM
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .pointer{
+        cursor:pointer;
+    }
+</style>
+
+<div>
+    @Html.EJS().DashboardLayout("HomeDashboard").Columns(6).ContentTemplate(@<div>
+        <div id="tournaments" class="e-panel" data-row="0" data-col="0" data-sizeX="2" data-sizeY="2">
+            <div>
+                All Tournaments
+            </div>
+            <div class="e-panel-container">
+                <div class="text-align">
+                    @Html.EJS().Grid("allTournament").DataSource(Model.Tournaments).Columns(col =>
+               {
+                   col.Field("Name").Template("<div><image src='${TournamentIcon}'/><span>${Name}</span</div>").Add();
+                   col.Field("StartingDate").HeaderText("Starts on").Format("yMd").Add();
+                   col.HeaderText("").Template("<span class='pointer'>&#9660</span>").Add();
+               }).Render()
+                </div>
+            </div>
+        </div>
+        <div id="recentMatches" class="e-panel" data-row="0" data-col="2" data-sizeX="2" data-sizeY="1">
+           <div>
+              Recent Matches
+           </div>
+            <div class="class="e-panel-container"">
+                <div class="text-align">
+                    @Html.EJS().Grid("allMatches").DataSource(Model.Matches).Render()
+                </div>
+            </div>
+        </div>
+    </div>).Render()
+</div>
