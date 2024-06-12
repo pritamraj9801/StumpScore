@@ -6,13 +6,15 @@
     .pointer {
         cursor: pointer;
     }
-.box50px{
-height:50px;
-width:50px;
-}
-    .heading{
-        font-size:1.2rem;
-        text-align:center;
+
+    .box50px {
+        height: 50px;
+        width: 50px;
+    }
+
+    .heading {
+        font-size: 1.2rem;
+        text-align: center;
     }
 </style>
 
@@ -46,8 +48,10 @@ width:50px;
                    col.Field("Team2.Name").HeaderText("").Template("<div><img class=\"box50px\" src=${Team2.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
                    col.Field("Stadium.StadiumName").HeaderText("").Add();
                    col.Field("MatchStart").HeaderText("").Add();
-                   col.Field("").Template("<button>Start</button>").Add();
-               }).Render()
+                   //col.Field("").Template(Html.ActionLink("Start", "LiveMatchHandler", "Match", new { matchId = 3, tournamentId = $"TournamentId", area = "Admin" }, null).ToString()).Add();
+                   col.Field("").Template("#matchStart").Add();
+                    
+}).Render()
                 </div>
             </div>
         </div>
@@ -56,4 +60,7 @@ width:50px;
 
 <script id="teamName" type="text/x-template">
     <div><img class="box50px" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>
+</script>
+<script id="matchStart" type="text/x-template">
+    <a href="/Admin/Match/LiveMatchHandler?matchId=${Id}&amp;tournamentId=${TournamentId}">Start</a>
 </script>

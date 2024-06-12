@@ -216,6 +216,7 @@
     <Content Include="Areas\Admin\Views\Shared\_Matches.cshtml" />
     <Content Include="Areas\Admin\Views\Match\MatchDetailedSummary.cshtml" />
     <Content Include="Views\Shared\_DateTimeWithZone.cshtml" />
+    <Content Include="Areas\Admin\Views\Match\LiveMatchHandler.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -6,3 +6,9 @@
     border: 1px solid red;
     color: red;
 }
+
+/*------------------- global classes*/
+.heading3 {
+    font-weight:600;
+    font-size:15px;
+}

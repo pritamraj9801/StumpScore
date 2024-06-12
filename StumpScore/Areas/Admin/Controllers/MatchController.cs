@@ -90,5 +90,20 @@ namespace StumpScore.Areas.Admin.Controllers
             matchDetailedVM.Stadium = _stadiumService.Get(match.StadiumId);
             return View(matchDetailedVM);
         }
+        public ActionResult LiveMatchHandler(int matchId, int tournamentId)
+        {
+            Matches match = _matchService.GetMatch(matchId);
+            Team team1 = _teamService.Get(match.Team1Id);
+            team1.Players = _playerMatchService.GetPlayersForMatch(match.Team1Id, tournamentId);
+
+            Team team2 = _teamService.Get(match.Team2Id);
+            team2.Players = _playerMatchService.GetPlayersForMatch(match.Team2Id, tournamentId);
+
+            match.Team1 = team1;
+            match.Team2 = team2;
+
+            match.Stadium = _stadiumService.Get(match.StadiumId);
+            return View(match);
+        }
     }
 }

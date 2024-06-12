@@ -1,0 +1,188 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.Matches
+@{
+    ViewBag.Title = "LiveMatchHandler";
+}
+<style>
+    .headingRow {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .displayNone {
+        display: none;
+    }
+
+    #scoreBoardContainer {
+        width: 800px;
+    }
+
+    #runs {
+        margin-top: 2rem;
+    }
+
+        #runs button {
+            padding: 0.4rem 0.8rem;
+            color: white;
+            background-color: darkcyan;
+            border-color: white;
+            outline: none;
+        }
+
+    #wickets {
+        margin-top: 2rem;
+    }
+
+        #wickets button {
+            padding: 0.4rem 0.8rem;
+            color: white;
+            background-color: tomato;
+            border-color: white;
+            outline: none;
+        }
+</style>
+<div id="scoreBoardContainer" class="mb-4">
+    <div>
+        <div class="headingRow">
+            <div>
+                <h5>@Model.Team1.Name</h5>
+            </div>
+            <div>
+                <button id="team1InfoCollapse">collapse toggle</button>
+            </div>
+        </div>
+        <div id="team1Info" class="displayNone">
+            @Html.EJS().Grid("team1Grid").DataSource(Model.Team1.Players).Columns(col =>
+       {
+           col.Field("Name").HeaderText("Batter").Add();
+           col.HeaderText("").Add(); // will contain out information
+           col.HeaderText("R").Add();
+           col.HeaderText("B").Add();
+           col.HeaderText("4s").Add();
+           col.HeaderText("6s").Add();
+           col.HeaderText("SR").Add();
+       }).Render()
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div class="headingRow">
+            <div>
+                <h5>@Model.Team2.Name</h5>
+            </div>
+            <div>
+                <button id="team2InfoCollapse">collapse toggle</button>
+            </div>
+        </div>
+        <div id="team2Info" class="displayNone">
+            @Html.EJS().Grid("team2Grid").DataSource(Model.Team2.Players).Columns(col =>
+       {
+           col.Field("Name").HeaderText("Batter").Add();
+           col.HeaderText("").Add(); // will contain out information
+           col.HeaderText("R").Add();
+           col.HeaderText("B").Add();
+           col.HeaderText("4s").Add();
+           col.HeaderText("6s").Add();
+           col.HeaderText("SR").Add();
+       }).Render()
+        </div>
+    </div>
+</div>
+<div>
+    @* ---------------- TOSS WON BY*@
+    <div class="mb-3">
+        @Html.Label("Toss Won: ", new { @class = "heading3" })
+        <br />
+        @Html.Label(Model.Team1.Name)
+        @Html.RadioButton("toss", Model.Team1.Name, false, new { @id = Model.Team1.Name, onclick = "PopulatePlayersDropdown()" })
+
+        @Html.Label(Model.Team2.Name)
+        @Html.RadioButton("toss", Model.Team2.Name, false, new { @id = Model.Team2.Name, onclick = "PopulatePlayersDropdown()" })
+    </div>
+    @* ---------------- Winner team choice (BATTING / BOWLING)*@
+    <div class="mb-3">
+        @Html.Label("Option Choosen: ", new { @class = "heading3" })
+        <br />
+        @Html.Label("Batting")
+        @Html.RadioButton("choosenOption", "bat", false, new { @id = "Batting", onclick = "PopulatePlayersDropdown()" })
+        @Html.Label("Bowling")
+        @Html.RadioButton("choosenOption", "ball", false, new { @id = "Bowling", onclick = "PopulatePlayersDropdown()" })
+    </div>
+    <div>
+        <div>
+            @Html.Label("On Strike", new { @class = "heading3" })
+            @Html.EJS().DropDownList("strike").DataSource(Model.Team1.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
+        </div>
+        <div>
+
+            @Html.Label("On Non Strike", new { @class = "heading3" })
+            @Html.EJS().DropDownList("nonstrike").DataSource(Model.Team1.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
+        </div>
+        <div>
+            @Html.Label("Bowler", new { @class = "heading3" })
+            @Html.EJS().DropDownList("bowler").DataSource(Model.Team2.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
+        </div>
+    </div>
+    <div>
+        @* ------------------------ runs*@
+        <div id="runs">
+            <button>6</button>
+            <button>4</button>
+            <button>3</button>
+            <button>2</button>
+            <button>1</button>
+        </div>
+        @* ---------------------- wickets*@
+        <div id="wickets">
+            <button>LBW</button>
+            <button>Catch Out</button>
+            <button>Bold</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // --------------- collapse team1 player information
+    document.getElementById("team1InfoCollapse").addEventListener('click', function () {
+        var team1Info = document.getElementById("team1Info");
+        if (team1Info.style.display === "none") {
+            team1Info.style.display = "initial";
+        } else {
+            team1Info.style.display = "none";
+        }
+    })
+    // -------------- collapse team2 player information
+    document.getElementById("team2InfoCollapse").addEventListener('click', function () {
+        var team1Info = document.getElementById("team2Info");
+        if (team1Info.style.display === "none") {
+            team1Info.style.display = "initial";
+        } else {
+            team1Info.style.display = "none";
+        }
+    })
+    // --------------- toss handler
+    function PopulatePlayersDropdown() {
+        let tosswon;
+        let optionsOpt;
+        // -------------- toss won
+        let teams = document.getElementsByName("toss");
+        for (let i = 0; i < teams.length; i++) {
+            if (teams[i].checked) {
+                tosswon = teams[i].value;
+                break;
+            }
+        }
+        // ---------------- selection after toss won
+        let optionChoosen = document.getElementsByName("choosenOption");
+        for (let i = 0; i < optionChoosen.length; i++) {
+            if (optionChoosen[i].checked) {
+                optionsOpt = optionChoosen[i].value;
+                break;
+            }
+        }
+        if (tosswon != undefined && optionsOpt != undefined) {
+            console.log(`${tosswon} won the toss and decided to ${optionsOpt}`);
+            // ---- populating the dropdown
+        }
+    }
+</script>
