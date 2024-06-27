@@ -8,6 +8,6 @@ namespace Vispl.Trainee.StumpScore.VO.Models
 {
     public class UserDashboardVM
     {
-        public List<Tournament> Tournaments { get; set; }
+        public List<Matches> Matches { get; set; }
     }
 }

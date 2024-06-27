@@ -1,0 +1,34 @@
+﻿@model Vispl.Trainee.StumpScore.VO.Models.Matches
+
+
+@using (Html.BeginForm("StartTheMatch", "Match", FormMethod.Post))
+{
+    @Html.HiddenFor(m=>m.Id)
+    @Html.HiddenFor(m=>m.TournamentId)
+
+    <div>
+        <!-- Radio buttons for toss -->
+        <div class="mb-3">
+            @Html.Label("Toss Won: ", new { @class = "heading3" })
+            <br />
+            @Html.Label(Model.Team1.Name)
+            @Html.RadioButton("toss", Model.Team1.Id, false, new { id = Model.Team1.Name,required="required" })
+
+            @Html.Label(Model.Team2.Name)
+            @Html.RadioButton("toss", Model.Team2.Id, false, new { id = Model.Team2.Name,required="required" })
+        </div>
+
+        <!-- Radio buttons for chosen option -->
+        <div class="mb-3">
+            @Html.Label("Option Chosen: ", new { @class = "heading3" })
+            <br />
+            @Html.RadioButton("choosenOption", "bat", false, new { id = "Batting" ,required="required"})
+            @Html.Label("Batting")
+            @Html.RadioButton("choosenOption", "ball", false, new { id = "Bowling",required="required" })
+            @Html.Label("Bowling")
+        </div>
+
+        <!-- Submit button to submit the form -->
+        <input type="submit" value="Submit" />
+    </div>
+}

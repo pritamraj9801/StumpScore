@@ -17,6 +17,27 @@ namespace Vispl.Trainee.StumpScore.DL
         {
             _connectionString = connectionString;
         }
+        public bool UpdateToss(Matches match, int toss, string choosenOption)
+        {
+            string query = $"update Matches set TossWonBy = {toss}, OptionChoosen='{choosenOption}' where Id = {match.Id}";
+            using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                {
+                    try
+                    {
+                        sqlConnection.Open();
+                        int result = sqlCommand.ExecuteNonQuery();
+                        return result > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return false;
+                    }
+                }
+            }
+        }
         public bool Add(Matches match)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
@@ -40,7 +61,6 @@ namespace Vispl.Trainee.StumpScore.DL
                     }
                     catch (Exception ex)
                     {
-                        // Log or handle the exception as needed
                         Console.WriteLine(ex.Message);
                         return false;
                     }
@@ -110,11 +130,22 @@ where Matches.TournamentId = " + tournamentId;
                     dataAdapter.Fill(dataSet);
                     foreach (DataRow row in dataSet.Tables[0].Rows)
                     {
+                        match.Id = Convert.ToInt32(row["Id"]);
                         match.Team1Id = Convert.ToInt32(row["Team1Id"]);
                         match.Team2Id = Convert.ToInt32(row["Team2Id"]);
                         match.StadiumId = Convert.ToInt32(row["StadiumId"]);
                         match.MatchStart = Convert.ToDateTime(row["MatchStart"]);
                         match.MatchEnd = Convert.ToDateTime(row["MatchEnd"]);
+                        if (row["TossWonBy"] == DBNull.Value)
+                        {
+                            match.TossWonBy = null;
+                        }
+                        else
+                        {
+                            match.TossWonBy = Convert.ToInt32(row["TossWonBy"]);
+                        }
+                        match.TournamentId = Convert.ToInt32(row["TournamentId"]);
+                        match.OptionChoosen = row["OptionChoosen"].ToString();
                     }
                 }
             }

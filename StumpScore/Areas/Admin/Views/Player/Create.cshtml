@@ -1,16 +1,17 @@
 ﻿@model Vispl.Trainee.StumpScore.VO.Models.Player
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Player";
 }
 <style>
-    #playerContainer{
-        width:70vw;
-        margin:10px auto;
+    #playerContainer {
+        width: 70vw;
+        margin: 10px auto;
     }
-    #playerContainer input {
-        border:none;
-        outline:none;
-    }
+
+        #playerContainer input {
+            border: none;
+            outline: none;
+        }
 </style>
 <div id="playerContainer">
     <div>
@@ -21,7 +22,8 @@
         {
             // ----------------- Name
             <div>
-                @Html.LabelFor(m=>m.Name)
+                @Html.LabelFor(m => m.Name)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().TextBoxFor(m => m.Name).Placeholder("Enter Name").Render()
                 <br />
@@ -30,6 +32,7 @@
             // ----------------- Jersey number
             <div>
                 @Html.LabelFor(m => m.JerseyNumber)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().NumericTextBoxFor(m => m.JerseyNumber).Format("###").Placeholder("Enter Jersey number").Render()
                 <br />
@@ -38,14 +41,16 @@
             // ----------------- date Of birth
             <div>
                 @Html.LabelFor(m => m.DateOfBirth)
+                <span class="required">*</span>
                 <br />
-                @Html.EJS().DateTimePickerFor(m => m.DateOfBirth).Placeholder("Enter Date of Birth").Render()
+                @Html.EJS().DatePickerFor(m => m.DateOfBirth).Placeholder("Enter Date of Birth").Render()
                 <br />
                 @Html.ValidationMessageFor(m => m.DateOfBirth, null, new { @class = "text-danger" })
             </div>
             // ----------------- Age
             <div>
                 @Html.DisplayNameFor(m => m.Age)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().TextBoxFor(m => m.Age).Placeholder("Enter age").Render()
                 <br />
@@ -63,6 +68,7 @@
             // ----------------- Nationality (Country)
             <div>
                 @Html.DisplayNameFor(m => m.CountryId)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().DropDownListFor(m => m.CountryId).DataSource(ViewBag.Countries as IEnumerable<SelectListItem>).Fields(f => f.Text("Text").Value("Value")).Placeholder("select country").Render()
                 <br />
@@ -71,6 +77,7 @@
             // ----------------- Player Type
             <div>
                 @Html.DisplayNameFor(m => m.PlayerTypeId)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().DropDownListFor(m => m.PlayerTypeId).DataSource(ViewBag.PlayersType as IEnumerable<SelectListItem>).Fields(f => f.Text("Text").Value("Value")).Placeholder("Select Player Type").Render()
                 <br />
@@ -157,6 +164,7 @@
             // ----------------- Picture
             <div>
                 @Html.DisplayNameFor(m => m.Picture)
+                <span class="required">*</span>
                 <br />
                 @Html.EJS().Uploader("playerImage").Multiple(false).Render()
                 @*@Html.TextBox("file", "", new { type = "file", required = "required" })*@

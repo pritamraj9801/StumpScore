@@ -1,12 +1,18 @@
 ﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Player>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Players";
 }
-
+@functions{
+    public string GetImageLocation(string playerType)
+    {
+        return "";
+    }
+}
 <style>
-    #PlayerContainer{
+    #PlayerContainer {
         padding: 2rem;
     }
+
     .image img {
         height: 55px;
         width: 55px;
@@ -18,7 +24,13 @@
         width: 25px;
         height: 25px;
     }
+
 </style>
+<script>
+    function recordClick(args) {
+        console.log(args);
+    }
+</script>
 <div id="PlayerContainer">
     <div>
         <h2 class="text-center">All Players</h2>
@@ -29,12 +41,9 @@
     <div>
         @Html.EJS().Grid("grid").DataSource(Model).Columns(col =>
     {
-        col.Field("Picture").HeaderText("").Template("#playerPicture").Add();
-        col.Field("Name").HeaderText("Player").Template("#playerType").Add();
-        //col.Field("JerseyNumber").HeaderText("").Add();
+        col.Field("Name").HeaderText("Player").Template("#playerInfo").HeaderTextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Width("250").Add();
+        col.Field("Nationality.CountryFlag").HeaderText("Country").Template(" <img src=${Nationality.CountryFlag} height='30px'/>").Add();
         col.Field("DateOfBirth").HeaderText("Date Of Birth").Format("yMd").Add();
-        col.Field("Nationality.CountryName").HeaderText("Country").Add();
-        col.Field("PlayerType.TypeName").HeaderText("Type").Add();
         col.Field("MatchesPlayed").HeaderText("Total Matches").Add();
         col.Field("RunsScored").HeaderText("Total Runs").Add();
         col.Field("WicketTaken").HeaderText("Total Wickets").Add();
@@ -46,20 +55,19 @@
     }).AllowPaging(true).PageSettings(p =>
     {
         p.PageSize(6);
-    }).Render()
+    }).AllowFiltering().Render()
     </div>
 </div>
-<script id="playerPicture" type="text/x-template">
-    <div class="image">
-        <img src="${Picture}" alt="" />
-    </div>
-</script>
-<script id="playerType" type="text/x-template">
+
+<script id="playerInfo" type="text/x-template">
     <div>
+        <span class="image">
+            <img src="${Picture}" alt="" />
+        </span>
         <span>${Name}</span>
         <span>(${JerseyNumber})</span>
         <span>
-            <img class="playerTypeImage" src="../../../../Content/Images/PlayersType/batter.png" />
+            <img class="playerTypeImage" src="../../../../Content/Images/PlayersType/${PlayerType.TypeName}.png" />
         </span>
     </div>
 </script>

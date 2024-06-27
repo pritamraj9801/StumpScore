@@ -39,7 +39,7 @@ namespace StumpScore.Areas.Admin.Controllers
         // ------------------ Team create [HttpGet]
         public ActionResult Create()
         {
-            Team team = new Team();
+           
             List<Player> players = _playerService.GetAll();
             List<SelectListItem> playersList = players.Select(p => new SelectListItem
             {
@@ -54,7 +54,7 @@ namespace StumpScore.Areas.Admin.Controllers
                 Text = t.Name
             }).ToList();
             ViewBag.Tournaments = tournamentsList;
-            return View(team);
+            return View();
         }
         // ------------------ Team create [HttpPost]
         [HttpPost]
@@ -77,12 +77,52 @@ namespace StumpScore.Areas.Admin.Controllers
                 }
                 else
                 {
+                    if (team.WicketKipperId == 0)
+                    {
+                        ModelState.AddModelError("WicketKipper", "Wicket kippetr is required");
+                    }
+                    if (team.TournamentId == 0)
+                    {
+                        ModelState.AddModelError("Tournament", "Wicket kipper is required");
+                    }
+                    List<Player> players = _playerService.GetAll();
+                    List<SelectListItem> playersList = players.Select(p => new SelectListItem
+                    {
+                        Value = p.Id.ToString(),
+                        Text = p.Name
+                    }).ToList();
+                    ViewBag.Players = players;
+                    List<Tournament> tournaments = _tournamentService.GetAll();
+                    List<SelectListItem> tournamentsList = tournaments.Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    }).ToList();
+                    ViewBag.Tournaments = tournamentsList;
                     return View(team);
                 }
 
             }
             else
             {
+                if (team.WicketKipperId == 0)
+                {
+                    ModelState.AddModelError("WicketKipperId", "Wicket kipper is required");
+                }
+                List<Player> players = _playerService.GetAll();
+                List<SelectListItem> playersList = players.Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Name
+                }).ToList();
+                ViewBag.Players = players;
+                List<Tournament> tournaments = _tournamentService.GetAll();
+                List<SelectListItem> tournamentsList = tournaments.Select(t => new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = t.Name
+                }).ToList();
+                ViewBag.Tournaments = tournamentsList;
                 return View(team);
             }
         }

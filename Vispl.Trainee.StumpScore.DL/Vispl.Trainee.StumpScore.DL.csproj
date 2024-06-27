@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BallStatsRepository.cs" />
     <Compile Include="CountryRepository.cs" />
     <Compile Include="MatchFormatRepository.cs" />
     <Compile Include="MatchRepository.cs" />

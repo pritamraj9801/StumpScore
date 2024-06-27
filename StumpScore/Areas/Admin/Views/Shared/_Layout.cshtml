@@ -4,12 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - StumpScore</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     <!-- Syncfusion ASP.NET MVC controls styles -->
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.2.3/fluent.css" />
     <!-- Syncfusion ASP.NET MVC controls scripts -->
     <script src="https://cdn.syncfusion.com/ej2/25.2.3/dist/ej2.min.js"></script>
+    @Styles.Render("~/Content/css")
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -31,11 +30,17 @@
         </div>
     </nav>
     @RenderBody()
-
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
     @Html.EJS().ScriptManager()
+    @RenderSection("scripts", required: false)
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var syncfusionAd = document.querySelector('div[style*="position: fixed"][style*="top: 10px"][style*="left: 10px"][style*="right: 10px"][style*="z-index: 999999999"]');
+            if (syncfusionAd) {
+                syncfusionAd.remove();
+            }
+        });
+    </script>
 </body>
 </html>

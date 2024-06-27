@@ -1,28 +1,22 @@
 ﻿@model Vispl.Trainee.StumpScore.VO.Models.UserDashboardVM
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "DashBoard";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
     System.Text.StringBuilder allTournaments = new System.Text.StringBuilder(); ;
 }
 
-@foreach (var tournament in Model.Tournaments)
-{
-    allTournaments.Append($"<p>{tournament.Name}</p>");
-}
-
-<style>
-    #defaultLayout {
-        padding: 10px;
-    }
-</style>
 <div>
-    <h1 class="text-center">Welcome to StumpScore</h1>
-    <div>
-        @Html.EJS().DashboardLayout("userDashboard").Columns(6).Panels(panel =>
-   {
-       panel.SizeX(1).SizeY(1).Row(0).Col(0).Content(allTournaments.ToString()).Header("All Tournaments").Add();
-       panel.SizeX(3).SizeY(1).Row(0).Col(1).Content("").Header("Ongoing Matches").Add();
-   }).Render()
-    </div>
+    @Html.EJS().Grid("matches").DataSource(Model.Matches).Columns(col =>
+{
+    col.Field("Team1.Name").HeaderText("Team 1").Add();
+    col.Field("Team2.Name").HeaderText("Team 2").Add();
+    col.Field("").Template("#matchStart").Add();
+}).Render()
 </div>
+
+<script id="matchStart" type="text/x-template">
+    <a href="/user/Home/LiveMatchHandler?matchId=${Id}&amp;tournamentId=${TournamentId}">Start</a>
+</script>
+
+
 

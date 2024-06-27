@@ -11,8 +11,10 @@ namespace Vispl.Trainee.StumpScore.VO.Models
     {
         public int Id { get; set; }
         [Display(Name = "Tournament Name")]
+        [Required]
         public string Name { get; set; }
         [Display(Name="Short Name")]
+        [Required]
         public string ShortName { get; set; }
         [Display(Name = "Starting Date")]
         public DateTime StartingDate { get; set; }
@@ -25,27 +27,5 @@ namespace Vispl.Trainee.StumpScore.VO.Models
 
         [Display(Name = "Tournament Logo")]
         public string TournamentIcon { get; set; }
-
-        // public int MyProperty { get; set; } // winning prize
-
-        //public int EntryFee { get; set; }
-
-        //public Country Country { get; set; }
-
-        //public State State { get; set; }
-
-        //public string Place { get; set; }
-
-        //public Stadium Stadium { get; set; }
-
-        //public List<Team> ParticipatingTeams { get; set; } 
-
-        // public int MyProperty { get; set; } // List<Matches>
-
-        //public Team WinnerTeam { get; set; }
-
-        // public int MyProperty { get; set; }  // match type
-
-        // public DateTime RegisterationDeadline { get; set; }
     }
 }

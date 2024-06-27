@@ -71,3 +71,17 @@
         }
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let scripts = document.querySelectorAll('script');
+        console.log("scripts: " + scripts)
+        if (scripts) {
+            let lastScriptElem = scripts[scripts.length - 1].nextElementSibling
+            if (lastScriptElem) {
+                lastScriptElem.remove();
+            }
+        }
+    })
+</script>

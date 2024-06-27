@@ -31,15 +31,20 @@ namespace StumpScore.Areas.Admin.Controllers
         // ------------------ Tournament Create [HttpGet]
         public ActionResult Create()
         {
-            Tournament tournament = new Tournament();
+            //Tournament tournament = new Tournament();
             List<MatchFormat> matchFormats = _matchFormatService.GetAll();
             ViewBag.MatchFormats = matchFormats;
-            return View(tournament);
+            //return View(tournament);
+            return View();
         }
         // ------------------ Tournament Create [HttpPost]
         [HttpPost]
         public ActionResult Create(Tournament tournament)
         {
+            if (tournament.MatchFormatId == 0)
+            {
+                ModelState.AddModelError("MatchFormatId", "Match format is required");
+            }
             if (ModelState.IsValid)
             {
                 if (_tournamentService.Add(tournament))

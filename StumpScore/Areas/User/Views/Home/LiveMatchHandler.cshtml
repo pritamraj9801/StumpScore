@@ -1,0 +1,137 @@
+﻿<!--
+<style>
+    .headingRow {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .displayNone {
+        display: none;
+    }
+</style>
+
+
+<div>
+
+</div>
+
+<div>
+    <div>
+        <div class="headingRow">
+            <div>
+                <h5>@Model.Team1.Name</h5>
+            </div>
+            <div>
+                <button id="team1InfoCollapse">collapse toggle</button>
+            </div>
+        </div>
+        <div id="team1Info" class="displayNone">
+            @Html.EJS().Grid("team1Grid").DataSource(Model.Team1.Players).Columns(col =>
+       {
+           col.Field("Name").HeaderText("Batter").Add();
+           col.HeaderText("").Add(); // will contain out information
+           col.HeaderText("R").Add();
+           col.HeaderText("B").Add();
+           col.HeaderText("4s").Add();
+           col.HeaderText("6s").Add();
+           col.HeaderText("SR").Add();
+       }).Render()
+            <div>
+                Extras:
+            </div>
+            <div>
+                Total:
+            </div>
+            <div>
+                Bowling Info:
+            </div>
+            <div>
+                Fall Of Wicket:
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div class="headingRow">
+            <div>
+                <h5>@Model.Team2.Name</h5>
+            </div>
+            <div>
+                <button id="team2InfoCollapse">collapse toggle</button>
+            </div>
+        </div>
+        <div id="team2Info" class="displayNone">
+            @Html.EJS().Grid("team2Grid").DataSource(Model.Team2.Players).Columns(col =>
+       {
+           col.Field("Name").HeaderText("Batter").Add();
+           col.HeaderText("").Add(); // will contain out information
+           col.HeaderText("R").Add();
+           col.HeaderText("B").Add();
+           col.HeaderText("4s").Add();
+           col.HeaderText("6s").Add();
+           col.HeaderText("SR").Add();
+       }).Render()
+            <div>
+                Extras:
+            </div>
+            <div>
+                Total:
+            </div>
+        </div>
+    </div>
+</div>-->
+@**@
+<!--<div>
+    Commentatory:
+</div>
+<div>
+    Points Table
+</div>
+<script>
+    // -------------- collapse team2 player information
+    document.getElementById("team1InfoCollapse").addEventListener('click', function () {
+        var team1Info = document.getElementById("team1Info");
+        if (team1Info.style.display === "none") {
+            team1Info.style.display = "initial";
+        } else {
+            team1Info.style.display = "none";
+        }
+    })
+    // -------------- collapse team2 player information
+    document.getElementById("team2InfoCollapse").addEventListener('click', function () {
+        var team1Info = document.getElementById("team2Info");
+        if (team1Info.style.display === "none") {
+            team1Info.style.display = "initial";
+        } else {
+            team1Info.style.display = "none";
+        }
+    })
+</script>-->
+
+
+@model Vispl.Trainee.StumpScore.VO.Models.Matches
+
+<div>
+    @if (Model.TossWonBy == Model.Team1Id)
+    {
+        <h1>@Model.Team1.Name won the toss and decided to @Model.OptionChoosen</h1>
+    }
+    else
+    {
+        <h1>@Model.Team2.Name won the toss and decided to @Model.OptionChoosen</h1>
+    }
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let scripts = document.querySelectorAll('script');
+        console.log("scripts: " + scripts)
+        if (scripts) {
+            let lastScriptElem = scripts[scripts.length - 1].nextElementSibling
+            if (lastScriptElem) {
+                lastScriptElem.remove();
+            }
+        }
+    })
+</script>

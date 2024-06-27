@@ -20,7 +20,7 @@ else
 
     <div id="matchesContainer">
         <div>
-            <table cellspacing="10" cellpadding="10">
+            <table cellspacing="10" cellpadding="10" id="matchesTable">
                 <thead class="tableHeading">
                     <tr>
                         <th>
@@ -92,14 +92,13 @@ else
             <p>Filter Matches</p>
             <label>From</label>
             <br />
-            @*@{string s = Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml").ToString();}*@
-            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml",new string[] {"fromDateTimePicker","fromTimeZonePicker"})
+            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml", new string[] { "fromDateTimePicker", "fromTimeZonePicker" })
             <br />
             <label>To</label>
             <br />
-            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml",new string[] { "toDateTimePicker", "toTimeZonePicker" })
+            @Html.Partial("~\\Views\\Shared\\_DateTimeWithZone.cshtml", new string[] { "toDateTimePicker", "toTimeZonePicker" })
             <br />
-           <button>Filter</button>
+            <button id="filterMatches">Filter</button>
         </div>
     </div>
 }

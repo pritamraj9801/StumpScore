@@ -1,6 +1,12 @@
-﻿@model Vispl.Trainee.StumpScore.VO.Models.Matches
+﻿@model Vispl.Trainee.StumpScore.VO.Models.LiveMatchHandlerVO
 @{
-    ViewBag.Title = "LiveMatchHandler";
+    ViewBag.Title = "Live Match";
+}
+@functions{
+    public string GetOversFromBall(int balls)
+    {
+        return (balls / 6).ToString() + "." + (balls % 6).ToString();
+    }
 }
 <style>
     .headingRow {
@@ -39,109 +45,264 @@
             border-color: white;
             outline: none;
         }
+
+    #extras {
+        margin-top: 2rem;
+    }
+
+        #extras button {
+            padding: 0.4rem 0.8rem;
+            color: white;
+            background-color: dodgerblue;
+            border-color: white;
+            outline: none;
+        }
+
+    #grid2 {
+        display: grid;
+        grid-template-columns: 60% auto;
+    }
 </style>
-<div id="scoreBoardContainer" class="mb-4">
-    <div>
-        <div class="headingRow">
-            <div>
-                <h5>@Model.Team1.Name</h5>
+<div id="grid2">
+    <div id="scoreBoardContainer" class="mb-4">
+        <div>
+            <div class="headingRow">
+                <div>
+                    <h5>@Model.Matches.Team1.Name</h5>
+                </div>
+                <div>
+                    <span>@Model.Inning2.TotalScore - @Model.Inning2.TotalWicket (@GetOversFromBall(Model.Inning2.TotalBalls))</span>
+                    <button id="team1InfoCollapse">collapse toggle</button>
+                </div>
             </div>
-            <div>
-                <button id="team1InfoCollapse">collapse toggle</button>
+            <div id="team1Info" class="displayNone">
+                <div>
+                    @Html.EJS().Grid("team1Grid").DataSource(Model.Matches.Team1.Players.Where(m => m.BallPlayed > 0)).Columns(col =>
+                    {
+                    col.Field("Name").HeaderText("Batter").Template("<span>${Name}</span><br/><span class='text-danger'>${OutInfo}</span>").Add();
+                    col.Field("RunsScored").HeaderText("R").Add();
+                    col.Field("BallPlayed").HeaderText("B").Add();
+                    col.Field("Fours").HeaderText("4s").Add();
+                    col.Field("Sixes").HeaderText("6s").Add();
+                    col.Field("StrikeRate").HeaderText("SR").Format("{0.00}").Add();
+                    }).Render()
+                </div>
+                <div>
+                    <p><b>Extras: </b>@Model.Inning2.ExtrasRuns (@Model.Inning2.Extras)</p>
+                </div>
+                <div>
+                    <div>
+                        @Html.EJS().Grid("team2BallerStats").DataSource(Model.Matches.Team2.Players.Where(p => p.BallThrown > 0)).Columns(col =>
+                        {
+                            col.Field("Name").Add();
+                            col.Field("BallThrown").HeaderText("O").Add();
+                            col.HeaderText("M").Add();
+                            col.HeaderText("R").Add();
+                            col.Field("WicketTaken").HeaderText("W").Add();
+                            col.HeaderText("NB").Add();
+                            col.HeaderText("WD").Add();
+                            col.HeaderText("ECO").Add();
+
+                        }).Render()
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="team1Info" class="displayNone">
-            @Html.EJS().Grid("team1Grid").DataSource(Model.Team1.Players).Columns(col =>
-       {
-           col.Field("Name").HeaderText("Batter").Add();
-           col.HeaderText("").Add(); // will contain out information
-           col.HeaderText("R").Add();
-           col.HeaderText("B").Add();
-           col.HeaderText("4s").Add();
-           col.HeaderText("6s").Add();
-           col.HeaderText("SR").Add();
-       }).Render()
+        <hr />
+        <div>
+            <div class="headingRow">
+                <div>
+                    <h5>@Model.Matches.Team2.Name</h5>
+                </div>
+                <div>
+                    <span>@Model.Inning1.TotalScore - @Model.Inning1.TotalWicket (@GetOversFromBall(Model.Inning1.TotalBalls))</span>
+                    <button id="team2InfoCollapse">collapse toggle</button>
+                </div>
+            </div>
+            <div id="team2Info" class="">
+                <div>
+
+                    @Html.EJS().Grid("team2Grid").DataSource(Model.Matches.Team2.Players.Where(m => m.BallPlayed > 0)).Columns(col =>
+               {
+                   col.Field("Name").HeaderText("Batter").Template("<span>${Name}</span><br/><span class='text-danger'>${OutInfo}</span>").Add();
+                   col.Field("RunsScored").HeaderText("R").Add();
+                   col.Field("BallPlayed").HeaderText("B").Add();
+                   col.Field("Fours").HeaderText("4s").Add();
+                   col.Field("Sixes").HeaderText("6s").Add();
+                   col.Field("StrikeRate").HeaderText("SR").Format("0.00").Add();
+               }).Render()
+                </div>
+                <div>
+                    <p><b>Extras: </b>@Model.Inning1.ExtrasRuns (@Model.Inning1.Extras)</p>
+                </div>
+                <div>
+                    @Html.EJS().Grid("team1BallerStats").DataSource(Model.Matches.Team1.Players.Where(p => p.BallThrown > 0)).Columns(col =>
+               {
+                   col.Field("Name").Add();
+                   col.Field("BallThrown").HeaderText("O").Add();
+                   col.HeaderText("M").Add();
+                   col.HeaderText("R").Add();
+                   col.Field("WicketTaken").HeaderText("W").Add();
+                   col.HeaderText("NB").Add();
+                   col.HeaderText("WD").Add();
+                   col.HeaderText("ECO").Add();
+               }).Render()
+                </div>
+            </div>
         </div>
     </div>
-    <hr />
-    <div>
-        <div class="headingRow">
-            <div>
-                <h5>@Model.Team2.Name</h5>
-            </div>
-            <div>
-                <button id="team2InfoCollapse">collapse toggle</button>
-            </div>
-        </div>
-        <div id="team2Info" class="displayNone">
-            @Html.EJS().Grid("team2Grid").DataSource(Model.Team2.Players).Columns(col =>
-       {
-           col.Field("Name").HeaderText("Batter").Add();
-           col.HeaderText("").Add(); // will contain out information
-           col.HeaderText("R").Add();
-           col.HeaderText("B").Add();
-           col.HeaderText("4s").Add();
-           col.HeaderText("6s").Add();
-           col.HeaderText("SR").Add();
-       }).Render()
-        </div>
+    <div id="matchInfo" class="p-4">
+        <h6 class="text-center"><u>Match Info</u></h6>
+        <p>
+            <b>Match:</b> @Model.Matches.Tournament.Name
+        </p>
+        <p>
+            <b>Date:</b> @Model.Matches.MatchStart.Date.ToString("yyyy-MM-dd")
+        </p>
+        <p>
+            <b>Time:</b> @Model.Matches.MatchStart.ToString("hh:mm tt")
+        </p>
+        <p>
+            <b>Venue:</b> @Model.Matches.Stadium.StadiumName
+        </p>
+        <p>
+            <b>
+                <u>
+                    @Model.Matches.Team1.Name Squad
+                </u>
+            </b>
+            @foreach (var player in Model.Matches.Team1.Players)
+            {
+                <span>@player.Name,</span>
+            }
+        </p>
+        <p>
+            <b>
+                <u>
+                    @Model.Matches.Team2.Name Squad
+                </u>
+            </b>
+            @foreach (var player in Model.Matches.Team2.Players)
+            {
+                <span>@player.Name,</span>
+            }
+        </p>
     </div>
 </div>
 <div>
-    @* ---------------- TOSS WON BY*@
-    <div class="mb-3">
-        @Html.Label("Toss Won: ", new { @class = "heading3" })
-        <br />
-        @Html.Label(Model.Team1.Name)
-        @Html.RadioButton("toss", Model.Team1.Name, false, new { @id = Model.Team1.Name, onclick = "PopulatePlayersDropdown()" })
-
-        @Html.Label(Model.Team2.Name)
-        @Html.RadioButton("toss", Model.Team2.Name, false, new { @id = Model.Team2.Name, onclick = "PopulatePlayersDropdown()" })
-    </div>
-    @* ---------------- Winner team choice (BATTING / BOWLING)*@
-    <div class="mb-3">
-        @Html.Label("Option Choosen: ", new { @class = "heading3" })
-        <br />
-        @Html.Label("Batting")
-        @Html.RadioButton("choosenOption", "bat", false, new { @id = "Batting", onclick = "PopulatePlayersDropdown()" })
-        @Html.Label("Bowling")
-        @Html.RadioButton("choosenOption", "ball", false, new { @id = "Bowling", onclick = "PopulatePlayersDropdown()" })
-    </div>
     <div>
-        <div>
-            @Html.Label("On Strike", new { @class = "heading3" })
-            @Html.EJS().DropDownList("strike").DataSource(Model.Team1.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
-        </div>
-        <div>
+        @using (Html.BeginForm("LiveMatchHandler", "Match", null, FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.Matches.Id)
+            @Html.HiddenFor(m => m.Matches.TournamentId)
+            <div>
+                @if (Model.Matches.TossWonBy == Model.Matches.Team1Id && Model.Matches.OptionChoosen == "bat")
+                {
+                    <h5 class="text-center">@Model.Matches.Team1.Name won the toss and decided to @Model.Matches.OptionChoosen</h5>
+                    <div>
+                        @Html.Label("On Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnStrike).DataSource(Model.Matches.Team1.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("On Non Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnNonStrike).DataSource(Model.Matches.Team1.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("Bowler", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.Bowler).DataSource(Model.Matches.Team2.Players.Where(p => p.PlayerTypeId > 1)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
+                    </div>
+                }
+                else if (Model.Matches.TossWonBy == Model.Matches.Team1Id && Model.Matches.OptionChoosen == "ball")
+                {
+                    <h5 class="text-center">@Model.Matches.Team1.Name won the toss and decided to @Model.Matches.OptionChoosen</h5>
+                    <div>
+                        @Html.Label("On Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnStrike).DataSource(Model.Matches.Team2.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("On Non Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnNonStrike).DataSource(Model.Matches.Team2.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("Bowler", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.Bowler).DataSource(Model.Matches.Team1.Players.Where(p => p.PlayerTypeId > 1)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
+                    </div>
+                }
+                else if (Model.Matches.TossWonBy == Model.Matches.Team2Id && Model.Matches.OptionChoosen == "bat")
+                {
+                    <h5 class="text-center">@Model.Matches.Team2.Name won the toss and decided to @Model.Matches.OptionChoosen</h5>
+                    <div>
+                        @Html.Label("On Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnStrike).DataSource(Model.Matches.Team2.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("On Non Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnNonStrike).DataSource(Model.Matches.Team2.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("Bowler", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.Bowler).DataSource(Model.Matches.Team1.Players.Where(p => p.PlayerTypeId > 1)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
+                    </div>
+                }
+                else
+                {
+                    <h5 class="text-center">@Model.Matches.Team2.Name won the toss and decided to @Model.Matches.OptionChoosen</h5>
+                    <div>
+                        @Html.Label("On Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnStrike).DataSource(Model.Matches.Team1.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("On Non Strike", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.OnNonStrike).DataSource(Model.Matches.Team1.Players.Where(p => p.IsOut != true)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
+                    </div>
+                    <div>
+                        @Html.Label("Bowler", new { @class = "heading3" })
+                        @Html.EJS().DropDownListFor(m => m.BallStats.Bowler).DataSource(Model.Matches.Team2.Players.Where(p => p.PlayerTypeId > 1)).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
+                    </div>
+                }
+            </div>
+            <div id="extras">
+                @Html.RadioButtonFor(m => m.BallStats.Extras, "wide", new { id = "wide" })
+                @Html.Label("wide")
+                @Html.RadioButtonFor(m => m.BallStats.Extras, "NoBall", new { id = "noball" })
+                @Html.Label("noball")
+                @Html.RadioButtonFor(m => m.BallStats.Extras, "LegBye", new { id = "legbye" })
+                @Html.Label("legbye")
+            </div>
 
-            @Html.Label("On Non Strike", new { @class = "heading3" })
-            @Html.EJS().DropDownList("nonstrike").DataSource(Model.Team1.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose player on non strike").Render()
-        </div>
-        <div>
-            @Html.Label("Bowler", new { @class = "heading3" })
-            @Html.EJS().DropDownList("bowler").DataSource(Model.Team2.Players).Fields(p => p.Text("Name").Value("Id")).Placeholder("Choose Bowler").Render()
-        </div>
-    </div>
-    <div>
-        @* ------------------------ runs*@
-        <div id="runs">
-            <button>6</button>
-            <button>4</button>
-            <button>3</button>
-            <button>2</button>
-            <button>1</button>
-        </div>
-        @* ---------------------- wickets*@
-        <div id="wickets">
-            <button>LBW</button>
-            <button>Catch Out</button>
-            <button>Bold</button>
-        </div>
+            <div id="runs">
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "", new { id = "zero" })
+                @Html.Label("zero")
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "1", new { id = "one" })
+                @Html.Label("one")
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "2", new { id = "two" })
+                @Html.Label("two")
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "3", new { id = "three" })
+                @Html.Label("three")
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "4", new { id = "four" })
+                @Html.Label("four")
+                @Html.RadioButtonFor(m => m.BallStats.Runs, "6", new { id = "six" })
+                @Html.Label("six")
+            </div>
+
+            <div id="wickets">
+                @Html.RadioButtonFor(m => m.BallStats.Wickets, "LBW", new { id = "lbw" })
+                @Html.Label("lbw")
+                @Html.RadioButtonFor(m => m.BallStats.Wickets, "catchOut", new { id = "catchout" })
+                @Html.Label("catchout")
+                @Html.RadioButtonFor(m => m.BallStats.Wickets, "bold", new { id = "bold" })
+                @Html.Label("bold")
+            </div>
+
+            <div>
+                <input type="submit" />
+            </div>
+        }
+
     </div>
 </div>
 
 <script>
-
     // --------------- collapse team1 player information
     document.getElementById("team1InfoCollapse").addEventListener('click', function () {
         var team1Info = document.getElementById("team1Info");
@@ -160,29 +321,9 @@
             team1Info.style.display = "none";
         }
     })
-    // --------------- toss handler
-    function PopulatePlayersDropdown() {
-        let tosswon;
-        let optionsOpt;
-        // -------------- toss won
-        let teams = document.getElementsByName("toss");
-        for (let i = 0; i < teams.length; i++) {
-            if (teams[i].checked) {
-                tosswon = teams[i].value;
-                break;
-            }
-        }
-        // ---------------- selection after toss won
-        let optionChoosen = document.getElementsByName("choosenOption");
-        for (let i = 0; i < optionChoosen.length; i++) {
-            if (optionChoosen[i].checked) {
-                optionsOpt = optionChoosen[i].value;
-                break;
-            }
-        }
-        if (tosswon != undefined && optionsOpt != undefined) {
-            console.log(`${tosswon} won the toss and decided to ${optionsOpt}`);
-            // ---- populating the dropdown
-        }
-    }
+</script>
+<script id="strikeRate" type="text/x-template">
+    <span id="strikeRate">
+        ${RunsScored}/${BallPlayed}*100
+    </span>
 </script>

@@ -56,16 +56,32 @@ namespace StumpScore.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(Player player, List<HttpPostedFileBase> playerImage)
         {
+            if (player.CountryId == 0 || player.PlayerTypeId == 0)
+            {
+                if (player.CountryId == 0)
+                {
+                    ModelState.AddModelError("CountryId", "country is required");
+                }
+                if (player.CountryId == 0)
+                {
+                    ModelState.AddModelError("PlayerTypeId", "Player Type is required");
+                }               
+            }
             // ----- if model is valid
             if (ModelState.IsValid)
             {
                 // -----storing the player picture if provided
-                if (playerImage != null)
+                if (playerImage != null && (playerImage.Count > 1 || playerImage[0] != null))
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(playerImage[1].FileName);
                     string path = Path.Combine(Server.MapPath("~/Content/Images/Players"), fileName);
                     playerImage[1].SaveAs(path);
                     player.Picture = Path.Combine("/Content/Images/Players", fileName);
+                }
+                else
+                {
+                    ModelState.AddModelError("Picture", "player image is required");
+                    return View(player);
                 }
                 // ----- if player added successfully
                 if (_playerService.Add(player))
@@ -81,6 +97,18 @@ namespace StumpScore.Areas.Admin.Controllers
             // ----- if model is not valid
             else
             {
+                if (player.CountryId == 0 || player.PlayerTypeId == 0)
+                {
+                    if (player.CountryId == 0)
+                    {
+                        ModelState.AddModelError("CountryId", "country is required");
+                    }
+                    if (player.CountryId == 0)
+                    {
+                        ModelState.AddModelError("PlayerTypeId", "Player Type is required");
+                    }
+                    //return View(player);
+                }
                 // ----- getting all countries
                 List<Country> Countries = _countryService.GetAll();
                 List<SelectListItem> CountriesList = Countries.Select(c => new SelectListItem

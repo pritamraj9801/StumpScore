@@ -75,7 +75,8 @@ namespace Vispl.Trainee.StumpScore.DL
                         {
                             Id = Convert.ToInt32(row["PlayerId"]),
                             JerseyNumber = Convert.ToInt32(row["JerseyNumber"]),
-                            Name = row["Name"].ToString()
+                            Name = row["Name"].ToString(),
+                            PlayerTypeId = Convert.ToInt32(row["PlayerTypeId"])
                         };
                         players.Add(player);
                     }

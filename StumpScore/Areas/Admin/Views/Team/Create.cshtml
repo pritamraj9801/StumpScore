@@ -1,6 +1,6 @@
 ﻿@model Vispl.Trainee.StumpScore.VO.Models.Team
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Team";
 }
 
 <style>
@@ -34,26 +34,31 @@
     }
 </style>
 <h2 class="text-center">Create Team</h2>
-
+<div>
+    @Html.ValidationSummary()
+</div>
 <div>
     @using (Html.BeginForm("Create", "Team", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
             @Html.DisplayNameFor(m => m.Name)
+            <span class="required">*</span>
             <br />
             @Html.EJS().TextBoxFor(m => m.Name).Render()
             <br />
-            @Html.ValidationMessageFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name, null, new {@class="text-danger"})
         </div>
         <div>
             @Html.DisplayNameFor(m => m.ShortName)
+            <span class="required">*</span>
             <br />
             @Html.EJS().TextBoxFor(m => m.ShortName).Render()
             <br />
-            @Html.ValidationMessageFor(m => m.ShortName)
+            @Html.ValidationMessageFor(m => m.ShortName, null, new {@class="text-danger"})
         </div>
         <div>
             @Html.DisplayNameFor(m => m.TeamOwner)
+            <span class="required">*</span>
             <br />
             @Html.EJS().TextBoxFor(m => m.TeamOwner).Render()
             <br />
@@ -61,10 +66,11 @@
         </div>
         <div>
             @Html.DisplayNameFor(m => m.TeamIcon)
+            <span class="required">*</span>
             <br />
-            @Html.TextBox("file", "", new { type = "file", required = "required" })
+            @Html.TextBox("file", "", new { type = "file"})
             <br />
-            @Html.ValidationMessageFor(m => m.TeamIcon)
+            @Html.ValidationMessageFor(m => m.TeamIcon, null, new {@class="text-danger"})
         </div>
 
         <h4 class="text-center">Add Players for your Team</h4>
@@ -79,13 +85,19 @@
         </div>
         <div>
             @Html.LabelFor(m => m.WicketKipperId)
+            <span class="required">*</span>
             <br />
             @Html.EJS().DropDownListFor(m => m.WicketKipperId).Placeholder("Select Wicket Kipper").Fields(p=>p.Text("Text").Value("Value")).Render()
+            <br/>
+            @Html.ValidationMessageFor(m => m.WicketKipperId, null, new {@class="text-danger"})
         </div>
         <div>
             @Html.LabelFor(m => m.TournamentId)
+            <span class="required">*</span>
             <br />
             @Html.EJS().DropDownListFor(m => m.TournamentId).DataSource(ViewBag.Tournaments as IEnumerable<SelectListItem>).Fields(t => t.Text("Text").Value("Value")).Placeholder("select Tournament").Render()
+            <br />
+            @Html.ValidationMessageFor(m => m.TournamentId, null, new { @class = "text-danger" }) @Html.ValidationMessageFor(m => m.WicketKipperId, null, new { @class = "text-danger" })
         </div>
         <div>
             <div>
@@ -216,3 +228,5 @@
             }
         }
     </script>*@
+
+

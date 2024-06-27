@@ -1,49 +1,64 @@
 ﻿
 @model Vispl.Trainee.StumpScore.VO.Models.Tournament
-<h2>Create Tournament</h2>
+@{
+    ViewBag.Title = "Create Tournament";
+}
 <div>
-    @using (Html.BeginForm("Create", "Tournament", FormMethod.Post))
-    {
-        <div>
-            @Html.LabelFor(m => m.Name)
-            <br />
-            @Html.EJS().TextBoxFor(m => m.Name).Render()
-        </div>
-        <div>
-            @Html.LabelFor(m => m.ShortName)
-            <br />
-            @Html.EJS().TextBoxFor(m => m.ShortName).Render()
-        </div>
-        <div>
-            @Html.LabelFor(m => m.StartingDate)
-            <br />
-            @Html.EJS().DateTimePickerFor(m => m.StartingDate).Render()
-        </div>
-        <div>
-            @Html.LabelFor(m => m.EndingDate)
-            <br />
-            @Html.EJS().DateTimePickerFor(m => m.EndingDate).Render()
-        </div>
-        <div>
-            @Html.LabelFor(m => m.MatchFormatId)
-            <br />
-            @Html.EJS().DropDownListFor(m=>m.MatchFormatId).DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.MatchFormat>)ViewBag.MatchFormats).Fields(f => f.Text("Name").Value("Id")).Render()
-        </div>
-        <div>
-            @Html.LabelFor(m => m.TournamentIcon)
-            <br />
-            @Html.TextBoxFor(m => m.TournamentIcon)
-        </div>
-        <div>
+    <h4 class="text-center">Create Tournament</h4>
+    <div>
+        @using (Html.BeginForm("Create", "Tournament", FormMethod.Post))
+        {
             <div>
-                <input type="submit" />
+                @Html.LabelFor(m => m.Name)
+                <span class="required">*</span>
+                <br />
+                @Html.EJS().TextBoxFor(m => m.Name).Placeholder("Enter the Tournament NAME").Render()
+                <br/>
+                @Html.ValidationMessageFor(m => m.Name, null, new {@class="text-danger"})
             </div>
             <div>
-                <a href="#">Clear</a>
+                @Html.LabelFor(m => m.ShortName)
+                <span class="required">*</span>
+                <br />
+                @Html.EJS().TextBoxFor(m => m.ShortName).Placeholder("Enter the tournament Name in short").Render()
+                <br/>
+                @Html.ValidationMessageFor(m => m.ShortName, null, new { @class = "text-danger" })
             </div>
             <div>
-                @Html.ActionLink("go back", "Index", "Tournament", new {area="Admin"})
+                @Html.LabelFor(m => m.StartingDate)
+                <span class="required">*</span>
+                <br />
+                @Html.EJS().DatePickerFor(m => m.StartingDate).Format("dd-MM-yyyy").Placeholder("select the starting date").Render()
+                <br/>
+                @Html.ValidationMessageFor(m => m.StartingDate, null, new { @class = "text-danger" })
             </div>
-        </div>
-    }
+            <div>
+                @Html.LabelFor(m => m.EndingDate)
+                <span class="required">*</span>
+                <br />
+                @Html.EJS().DatePickerFor(m => m.EndingDate).Format("dd-MM-yyyy").Placeholder("select the ending date").Render()
+                <br />
+                @Html.ValidationMessageFor(m => m.EndingDate, null, new { @class = "text-danger" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.MatchFormatId)
+                <span class="required">*</span>
+                <br />
+                @Html.EJS().DropDownListFor(m => m.MatchFormatId).DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.MatchFormat>)ViewBag.MatchFormats).Fields(f => f.Text("Name").Value("Id")).Placeholder("-- select the tournamnet format --").Render()
+                <br/>
+                 @Html.ValidationMessageFor(m => m.MatchFormatId, null, new {@class="text-danger"})
+            </div>
+            <div>
+                <div>
+                    <input type="submit" />
+                </div>
+                @*<div>
+                    <a href="#">Clear</a>
+                </div>*@
+                <div>
+                    @Html.ActionLink("go back", "Index", "Tournament", new { area = "Admin" })
+                </div>
+            </div>
+        }
+    </div>
 </div>

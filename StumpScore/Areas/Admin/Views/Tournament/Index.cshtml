@@ -1,6 +1,6 @@
 ﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Tournament>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Tournaments";
 }
 
 <div>
@@ -13,8 +13,8 @@
    {
        col.Field("Name").Add();
        col.Field("ShortName").HeaderText("Short Name").Add();
-       col.Field("StartingDate").HeaderText("Starting Date").Add();
-       col.Field("EndingDate").HeaderText("Ending Date").Add();
+       col.Field("StartingDate").HeaderText("Starting Date").Format("dd-MM-yyyy").Add();
+       col.Field("EndingDate").HeaderText("Ending Date").Format("dd-MM-yyyy").Add();
        col.Field("MatchFormat.Name").HeaderText("Format").Add();
    }).Render()
     </div>

@@ -1,6 +1,6 @@
 ﻿@model Vispl.Trainee.StumpScore.VO.Models.AdminDashboardVM
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Admin DashBoard";
 }
 <style>
     .pointer {
@@ -10,6 +10,10 @@
     .box50px {
         height: 50px;
         width: 50px;
+    }
+
+    .circular {
+        border-radius: 50%;
     }
 
     .heading {
@@ -43,15 +47,14 @@
                 <div class="text-align">
                     @Html.EJS().Grid("allMatches").DataSource(Model.Matches).Columns(col =>
                {
-                   col.Field("Team1.Name").HeaderText("").Template("<div><img class=\"box50px\" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
-                   col.Field("").Template("v/s").Add();
-                   col.Field("Team2.Name").HeaderText("").Template("<div><img class=\"box50px\" src=${Team2.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
-                   col.Field("Stadium.StadiumName").HeaderText("").Add();
-                   col.Field("MatchStart").HeaderText("").Add();
-                   //col.Field("").Template(Html.ActionLink("Start", "LiveMatchHandler", "Match", new { matchId = 3, tournamentId = $"TournamentId", area = "Admin" }, null).ToString()).Add();
+                   col.Field("Team1.Name").HeaderText("").Template("<div><img class=\"box50px circular\" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>").Add();
+                   col.Field("").Template("v/s").Width("40").Add();
+                   col.Field("Team2.Name").HeaderText("").Template("<div><img class=\"box50px circular\" src=${Team2.TeamIcon} /><span>${Team2.Name}</span></div>").Add();
+                   col.Field("Stadium.StadiumName").HeaderText("").Template("<span><b>Stadium</b></span><br/><span>${Stadium.StadiumName}</span>").Add();
+                   col.Field("MatchStart").HeaderText("").Format("dd-MM-yyyy HH:mm").Add();
                    col.Field("").Template("#matchStart").Add();
-                    
-}).Render()
+
+               }).Render()
                 </div>
             </div>
         </div>
@@ -62,5 +65,7 @@
     <div><img class="box50px" src=${Team1.TeamIcon} /><span>${Team1.Name}</span></div>
 </script>
 <script id="matchStart" type="text/x-template">
-    <a href="/Admin/Match/LiveMatchHandler?matchId=${Id}&amp;tournamentId=${TournamentId}">Start</a>
+    <a href="/Admin/Match/StartTheMatch?matchId=${Id}&amp;tournamentId=${TournamentId}">Start</a>
 </script>
+
+

@@ -240,3 +240,76 @@ select * from player where Id = 1017
 update Player 
 set CountryId = 1
 where Id = 1017
+
+
+
+-- ScroreBoard tables
+
+
+-- wicket type 
+create table WicketType(
+Id int primary key identity(1,1),
+Wicket varchar(20)
+)
+
+INSERT INTO WicketType (Wicket) VALUES ('Bowled');
+INSERT INTO WicketType (Wicket) VALUES ('Caught');
+INSERT INTO WicketType (Wicket) VALUES ('LBW');
+INSERT INTO WicketType (Wicket) VALUES ('Run Out');
+INSERT INTO WicketType (Wicket) VALUES ('Stumped');
+INSERT INTO WicketType (Wicket) VALUES ('Hit Wicket');
+
+select * from WicketType
+
+drop table WicketType
+
+
+create table Inning(
+Id int primary key identity(1,1),
+TotalRuns int,
+TotalWicket int
+)
+
+drop table Inning
+
+create table ScoreBoard(
+Id int primary key identity(1,1),
+Inning1Id int,
+Inning2Id int,
+TossWonByTeamId int,
+DecisionChoosen int
+)
+drop table ScoreBoard
+
+
+select * from Matches
+
+
+
+create table BallStats(
+Id int primary key identity(1,1),
+MatchId int, -- FK
+TournamentId int, -- FK
+Inning int check(Inning IN (1, 2)),
+OnStrikePlayerId int,  -- FK
+OnNonStrikePlayerId int,  -- FK
+BowlerId int,   -- FK
+Runs int,
+Extras varchar(10),
+Wicket bit,
+FielderContributionId int,-- FK
+Commentatory varchar(100)
+foreign key(MatchId) references Matches(Id),
+foreign key(TournamentId) references Tournament(Id),
+foreign key(OnStrikePlayerId) references Player(Id),
+foreign key(OnNonStrikePlayerId) references Player(Id),
+foreign Key(BowlerId) references Player(Id),
+foreign key(FielderContributionId) references Player(Id)
+)
+select * from BallStats where MatchId=1 and TournamentId =1 and Inning =1
+drop table BallStats
+-- foreign key(Team1Id) references Team(Id),
+
+update Matches set TossWonBy = 2, OptionChoosen='bat' where Id = 1 AND TournamentId =1
+
+select * from Matches

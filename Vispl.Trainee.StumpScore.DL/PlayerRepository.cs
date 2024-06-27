@@ -31,23 +31,106 @@ namespace Vispl.Trainee.StumpScore.DL
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    // required
                     command.Parameters.AddWithValue("@JerseyNumber", player.JerseyNumber);
+                    // required
                     command.Parameters.AddWithValue("@Name", player.Name);
+                    // required
                     command.Parameters.AddWithValue("@DateOfBirth", player.DateOfBirth);
+                    // required
                     command.Parameters.AddWithValue("@Age", player.Age);
-                    command.Parameters.AddWithValue("@BirthPlace", player.BirthPlace);
+                    // can be null
+                    if (player.BirthPlace == null)
+                    {
+                        command.Parameters.AddWithValue("@BirthPlace", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@BirthPlace", player.BirthPlace);
+                    }
                     command.Parameters.AddWithValue("@CountryId", player.CountryId);
                     command.Parameters.AddWithValue("@PlayerTypeId", player.PlayerTypeId);
                     command.Parameters.AddWithValue("@IsCaptain", player.IsCaptain);
-                    command.Parameters.AddWithValue("@MatchesPlayed", player.MatchesPlayed);
-                    command.Parameters.AddWithValue("@RunsScored", player.RunsScored);
-                    command.Parameters.AddWithValue("@WicketTaken", player.WicketTaken);
-                    command.Parameters.AddWithValue("@BattingAverage", player.BattingAverage);
-                    command.Parameters.AddWithValue("@BowlingAverage", player.BowlingAverage);
-                    command.Parameters.AddWithValue("@Centuries", player.Centuries);
-                    command.Parameters.AddWithValue("@HalfCenturies", player.HalfCenturies);
-                    command.Parameters.AddWithValue("@DebutDate", player.DebutDate);
-                    command.Parameters.AddWithValue("@ICCRanking", player.ICCRanking);
+
+                    // nullable
+                    if (player.MatchesPlayed == null)
+                    {
+                        command.Parameters.AddWithValue("@MatchesPlayed", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@MatchesPlayed", player.MatchesPlayed);
+                    }
+                    if (player.RunsScored == null)
+                    {
+                        command.Parameters.AddWithValue("@RunsScored", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@RunsScored", player.RunsScored);
+                    }
+                    if (player.WicketTaken == null)
+                    {
+                        command.Parameters.AddWithValue("@WicketTaken", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@WicketTaken", player.WicketTaken);
+                    }
+                    if (player.BattingAverage == null)
+                    {
+                        command.Parameters.AddWithValue("@BattingAverage", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@BattingAverage", player.BattingAverage);
+                    }
+                    if (player.BowlingAverage == null)
+                    {
+                        command.Parameters.AddWithValue("@BowlingAverage", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@BowlingAverage", player.BowlingAverage);
+                    }
+                    if (player.Centuries == null)
+                    {
+                        command.Parameters.AddWithValue("@Centuries", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@Centuries", player.Centuries);
+                    }
+
+                    if (player.HalfCenturies == null)
+                    {
+                        command.Parameters.AddWithValue("@HalfCenturies", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@HalfCenturies", player.HalfCenturies);
+                    }
+
+                    if (player.DebutDate == null)
+                    {
+                        command.Parameters.AddWithValue("@DebutDate", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@DebutDate", player.DebutDate);
+                    }
+
+                    if (player.ICCRanking == null)
+                    {
+                        command.Parameters.AddWithValue("@ICCRanking", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@ICCRanking", player.ICCRanking);
+                    }
+
+
+
                     command.Parameters.AddWithValue("@Picture", player.Picture);
 
                     try
@@ -91,7 +174,8 @@ left join PlayerType on Player.PlayerTypeId=PlayerType.Id;";
                             Nationality = new Country
                             {
                                 Id = Convert.ToInt32(row["CountryId"]),
-                                CountryName = row["CountryName"].ToString()
+                                CountryName = row["CountryName"].ToString(),
+                                CountryFlag = row["CountryFlag"].ToString()
                             },
                             PlayerType = new PlayerType
                             {
@@ -99,17 +183,82 @@ left join PlayerType on Player.PlayerTypeId=PlayerType.Id;";
                                 TypeName = row["TypeName"].ToString()
                             },
                             IsCaptain = Convert.ToBoolean(row["IsCaptain"]),
-                            MatchesPlayed = Convert.ToInt32(row["MatchesPlayed"]),
-                            RunsScored = Convert.ToInt32(row["RunsScored"]),
-                            WicketTaken = Convert.ToInt32(row["WicketTaken"]),
-                            BattingAverage = Convert.ToDouble(row["BattingAverage"]),
-                            BowlingAverage = Convert.ToDouble(row["BowlingAverage"]),
-                            Centuries = Convert.ToInt32(row["Centuries"]),
-                            HalfCenturies = Convert.ToInt32(row["HalfCenturies"]),
-                            DebutDate = Convert.ToDateTime(row["DebutDate"]),
-                            ICCRanking = Convert.ToInt32(row["ICCRanking"]),
                             Picture = row["Picture"].ToString()
                         };
+                        // ------- handling for the null values
+
+                        if (row["MatchesPlayed"] == DBNull.Value)
+                        {
+                            player.MatchesPlayed = null;
+                        }
+                        else
+                        {
+                            player.MatchesPlayed = Convert.ToInt32(row["MatchesPlayed"]);
+                        }
+                        if (row["RunsScored"] == DBNull.Value)
+                        {
+                            player.RunsScored = null;
+                        }
+                        else
+                        {
+                            player.RunsScored = Convert.ToInt32(row["RunsScored"]);
+                        }
+                        if (row["WicketTaken"] == DBNull.Value)
+                        {
+                            player.WicketTaken = null;
+                        }
+                        else
+                        {
+                            player.WicketTaken = Convert.ToInt32(row["WicketTaken"]);
+                        }
+                        if (row["BattingAverage"] == DBNull.Value)
+                        {
+                            player.BattingAverage = null;
+                        }
+                        else
+                        {
+                            player.BattingAverage = Convert.ToDouble(row["BattingAverage"]);
+                        }
+                        if (row["BowlingAverage"] == DBNull.Value)
+                        {
+                            player.BowlingAverage = null;
+                        }
+                        else
+                        {
+                            player.BowlingAverage = Convert.ToDouble(row["BowlingAverage"]);
+                        }
+                        if (row["Centuries"] == DBNull.Value)
+                        {
+                            player.Centuries = null;
+                        }
+                        else
+                        {
+                            player.Centuries = Convert.ToInt32(row["Centuries"]);
+                        }
+                        if (row["HalfCenturies"] == DBNull.Value)
+                        {
+                            player.HalfCenturies = null;
+                        }
+                        else
+                        {
+                            player.HalfCenturies = Convert.ToInt32(row["HalfCenturies"]);
+                        }
+                        if (row["DebutDate"] == DBNull.Value)
+                        {
+                            player.DebutDate = null;
+                        }
+                        else
+                        {
+                            player.DebutDate = Convert.ToDateTime(row["DebutDate"]);
+                        }
+                        if (row["ICCRanking"] == DBNull.Value)
+                        {
+                            player.ICCRanking = null;
+                        }
+                        else
+                        {
+                            player.ICCRanking = Convert.ToInt32(row["ICCRanking"]);
+                        }
 
                         players.Add(player);
                     }

@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AdminDashboardVM.cs" />
+    <Compile Include="Models\BallStats.cs" />
+    <Compile Include="Models\LiveMatchHandlerVO.cs" />
     <Compile Include="Models\MatchDetailedVM.cs" />
     <Compile Include="Models\Matches.cs" />
     <Compile Include="Models\MatchFormat.cs" />

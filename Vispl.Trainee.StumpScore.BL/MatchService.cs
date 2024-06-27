@@ -27,6 +27,10 @@ namespace Vispl.Trainee.StumpScore.BL
         {
             return _matchRepository.GetMatch(matchId);
         }
+        public bool UpdateToss(Matches match, int toss, string choosenOption)
+        {
+           return _matchRepository.UpdateToss(match, toss, choosenOption);
+        }
         public List<Matches> GetAll()
         {
             return _matchRepository.GetAll();

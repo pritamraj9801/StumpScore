@@ -1,14 +1,14 @@
 ﻿@model List<Vispl.Trainee.StumpScore.VO.Models.Tournament>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Matches";
 }
 <div>
     <div>
         <h2 class="text-center">All Matches</h2>
-        @Html.ActionLink("Create new", "Create", "Match", new {@class= "createBtn" })
+        @Html.ActionLink("Create new", "Create", "Match", new { @class = "createBtn" })
     </div>
     <div>
-        @Html.Label("Tournament")
+        @Html.Label("Select Tournament")
         @Html.EJS().DropDownList("tournament").DataSource((IEnumerable<Vispl.Trainee.StumpScore.VO.Models.Tournament>)Model).Fields(f => f.Text("Name").Value("Id")).Change("Getmatches").Placeholder("Select Tournament").HtmlAttributes(new Dictionary<string, object> { { "id", "tournamentDropdown" } }).Render()
     </div>
     <div id="matches">
@@ -19,18 +19,92 @@
 <script>
     function Getmatches() {
         let tournamentId = document.getElementsByName('tournament')[0].options[0].value;
-//        console.log("Tournament selected: " + tournamentId);
+        //        console.log("Tournament selected: " + tournamentId);
         $.ajax({
             url: '/Admin/Match/MatchesForTournament',
             type: 'GET',
             data: { tournamentId: tournamentId },
             success: function (data) {
                 $('#matches').html(data);
+                let filterBtn = document.getElementById("filterMatches");
+                if (filterBtn) {
+                    filterBtn.addEventListener('click', GetResponse)
+                }
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching matches:', error);
             }
         });
     }
+   function GetResponse() {
+    console.log("wants to get response");
+
+    let fromDatePicker = document.getElementById("fromDateTimePicker").value;
+    let fromTimeZone = document.getElementById("fromTimeZonePicker").value;
+    console.log("FROM: " + fromDatePicker, "Time Zone: " + fromTimeZone);
+
+    let toDatePicker = document.getElementById("toDateTimePicker").value;
+    let toTimeZone = document.getElementById("toTimeZonePicker").value;
+    console.log("TO: " + toDatePicker, "Time Zone: " + toTimeZone);
+
+    if (fromDatePicker && fromTimeZone && toDatePicker && toTimeZone) {
+        console.log("All fields are populated");
+
+        let url = `https://localhost:44322/Admin/Match/GetMatches?fromDateTime=${encodeURIComponent(fromDatePicker)}&fromTimeZone=${encodeURIComponent(fromTimeZone)}&toDateTime=${encodeURIComponent(toDatePicker)}&toTimeZone=${encodeURIComponent(toTimeZone)}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+
+                    console.log("Matches:", data);
+                    // Clear existing rows
+                    let tableBody = document.querySelector('#matchesTable tbody');
+                    tableBody.innerHTML = '';
+
+                    // Render new rows
+                    data.forEach(match => {
+                        // Create new row element
+                        let row = document.createElement('tr');
+
+                        // Construct HTML for the row
+                        row.innerHTML = `
+                        <td>
+                            <div>${match.Team1.Name}</div>
+                        </td>
+                        <td>
+                            <div>${match.Team2.Name}</div>
+                        </td>
+                        <td>
+                            <div>${match.Stadium.StadiumName}</div>
+                        </td>
+                        <td>
+                             <div>${match.MatchStart}</div>
+                        </td>
+                        <td>
+                          <div>${match.MatchEnd}</div>
+                        </td>
+                        <td>
+                            <a href="/Admin/Match/MatchDetailedSummary?matchId=${match.Id}&tournamentId=${match.TournamentId}">See Details</a>
+                        </td>
+                    `;
+                        tableBody.appendChild(row);
+                    });
+                }
+                else {
+                    let tableBody = document.querySelector('#matchesTable');
+                    tableBody.innerHTML = '<p>There is no any sheduled match</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching matches:', error);
+            });
+    } else {
+        console.log("Please fill in all date-time fields");
+    }
+}
+
 </script>
+
+
 

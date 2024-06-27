@@ -39,26 +39,41 @@ namespace Vispl.Trainee.StumpScore.VO.Models
         public PlayerType PlayerType { get; set; } 
 
         [Display(Name="Playes as captain")]
-        public bool IsCaptain { get; set; }
+        public bool? IsCaptain { get; set; }
         [Display(Name="Total matches played")]
-        public int MatchesPlayed { get; set; }
+        public int? MatchesPlayed { get; set; }
         [Display(Name="Total runs scored")]
-        public int RunsScored { get; set; }
+        public int? RunsScored { get; set; }
         [Display(Name="Total Wicket Taken")]
-        public int WicketTaken { get; set; }
+        public int? WicketTaken { get; set; }
         [Display(Name="Batting Average")]
-        public double BattingAverage { get; set; }
+        public double? BattingAverage { get; set; }
         [Display(Name="Bowling Average")]
-        public double BowlingAverage { get; set; }
+        public double? BowlingAverage { get; set; }
         [Display(Name="Total Centuries")]
-        public int Centuries { get; set; }
+        public int? Centuries { get; set; }
         [Display(Name="Total Half Centuries")]
-        public int HalfCenturies { get; set; }
+        public int? HalfCenturies { get; set; }
         [Display(Name="Debut Date")]
-        public DateTime DebutDate { get; set; }
+        public DateTime? DebutDate { get; set; }
         [Display(Name="ICC Ranking")]
-        public int ICCRanking { get; set; }
-        [Display(Name="Player Picture")]
+        public int? ICCRanking { get; set; }
+        [Display(Name="Picture")]
         public string Picture { get; set; }
+
+
+
+
+
+        // trash
+        public int BallPlayed { get; set; }
+        public int Sixes { get; set; }
+        public int Fours { get; set; }
+        public int BallThrown { get; set; }
+
+        // -------------
+        public bool IsOut { get; set; }
+        public string OutInfo { get; set; }
+        public double StrikeRate { get; set; }
     }
 }

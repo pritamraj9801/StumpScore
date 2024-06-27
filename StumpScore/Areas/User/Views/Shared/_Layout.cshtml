@@ -31,9 +31,18 @@
     </nav>
     @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")*@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     @Html.EJS().ScriptManager()
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var syncfusionAd = document.querySelector('div[style*="position: fixed"][style*="top: 10px"][style*="left: 10px"][style*="right: 10px"][style*="z-index: 999999999"]');
+            if (syncfusionAd) {
+                syncfusionAd.remove();
+            }
+        });
+    </script>
 </body>
 </html>
